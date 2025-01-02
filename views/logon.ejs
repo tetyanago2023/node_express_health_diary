@@ -1,0 +1,20 @@
+<!-- views/logon.ejs -->
+
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %>
+<form method="POST" class="mx-auto p-3 border rounded shadow" style="max-width: 400px;">
+    <input type="hidden" name="_csrf" value="<%= _csrf %>"> <!-- CSRF Token -->
+    <div class="mb-3">
+        <label for="email" class="form-label">Enter your email:</label>
+        <input type="email" id="email" name="email" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Enter your password:</label>
+        <input type="password" id="password" name="password" class="form-control" />
+    </div>
+    <div class="d-flex justify-content-between">
+        <button class="btn btn-primary">Logon</button>
+        <a href="/" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+<%- include("partials/footer.ejs") %>

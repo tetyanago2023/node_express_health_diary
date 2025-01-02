@@ -1,0 +1,80 @@
+/*style.css*/
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination a, .pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Style for filter input fields and placeholders */
+#jobs-table input {
+    width: 120px; /* Adjust as needed for desired width */
+    padding: 5px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#jobs-table input::placeholder {
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Default (light mode) styles */
+:root {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --table-border-color: #ddd;
+    --input-bg-color: #f9f9f9;
+    --input-text-color: #000000;
+}
+
+/* Dark mode styles */
+[data-theme="dark"] {
+    --background-color: #1e1e1e;
+    --text-color: #ffffff;
+    --table-border-color: #444;
+    --input-bg-color: #333;
+    --input-text-color: #ffffff;
+}
+
+/* Apply theme variables globally */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+table {
+    border-color: var(--table-border-color);
+    color: var(--text-color);
+}
+
+table th,
+table td {
+    color: var(--text-color);
+}
+
+input[type="text"] {
+    background-color: var(--input-bg-color);
+    color: var(--input-text-color);
+    border: 1px solid var(--table-border-color);
+}
