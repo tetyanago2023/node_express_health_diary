@@ -2,46 +2,73 @@
 
 const HealthEntry = require("../models/HealthEntry");
 
-const getAllHealthEntries = async (req, res, next) => {
+const getAllHealthEntries = async (req, res) => {
     try {
-        if (!req.user || !req.user.id) {
-            throw new Error("User information is missing.");
+        const { date, bloodSugarLevel, physicalActivity, mealLog, notes, medicationsTaken, page = 1, limit = 10 } = req.query;
+
+        const filters = {};
+
+        // Add date filter (exact match or range if needed)
+        if (date) {
+            filters.date = new Date(date); // Parse the date input correctly
         }
 
-        const page = parseInt(req.query.page, 10) || 1;
-        const limit = parseInt(req.query.limit, 10) || 10;
+        // Add blood sugar level filter (exact match or range)
+        if (bloodSugarLevel) {
+            filters.bloodSugarLevel = Number(bloodSugarLevel); // Ensure it's a number
+        }
+
+        // Add physical activity filter (case-insensitive search)
+        if (physicalActivity) {
+            filters['physicalActivities.name'] = { $regex: physicalActivity, $options: 'i' };
+        }
+
+        // Add meal log filter (case-insensitive search)
+        if (mealLog) {
+            filters['mealLog.foodName'] = { $regex: mealLog, $options: 'i' };
+        }
+
+        // Add notes filter (case-insensitive search)
+        if (notes) {
+            filters.notes = { $regex: notes, $options: 'i' };
+        }
+
+        // Add medications filter (case-insensitive search)
+        if (medicationsTaken) {
+            filters['medications.name'] = { $regex: medicationsTaken, $options: 'i' };
+        }
+
+        // Pagination settings
         const skip = (page - 1) * limit;
 
-        const dateFilter = req.query.date || '';
-
-        const healthEntries = await HealthEntry.find({
-            userId: req.user.id,
-            date: { $regex: dateFilter, $options: 'i' }
-        })
-            .sort('-date') // Sort by date, descending
+        // Query the database
+        const healthEntries = await HealthEntry.find(filters)
             .skip(skip)
-            .limit(limit);
+            .limit(Number(limit));
 
-        const totalHealthEntries = await HealthEntry.countDocuments({
-            userId: req.user.id,
-            date: { $regex: dateFilter, $options: 'i' }
-        });
+        // Count total documents for pagination
+        const totalEntries = await HealthEntry.countDocuments(filters);
 
-        const totalPages = Math.ceil(totalHealthEntries / limit);
-
-        res.render("healthEntries", {
+        res.render('healthEntries', {
             healthEntries,
-            currentPage: page,
-            totalPages,
+            currentPage: Number(page),
+            totalPages: Math.ceil(totalEntries / limit),
+            limit: Number(limit),
             hasPrevPage: page > 1,
-            hasNextPage: page < totalPages,
-            limit,
-            dateFilter
+            hasNextPage: page * limit < totalEntries,
+            dateFilter: date || '',
+            bloodSugarFilter: bloodSugarLevel || '',
+            activityFilter: physicalActivity || '',
+            mealLogFilter: mealLog || '',  // Pass mealLogFilter to the view
+            notesFilter: notes || '',      // Pass notesFilter to the view
+            medicationsFilter: medicationsTaken || '', // Pass medicationsFilter to the view
         });
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('An error occurred while fetching health entries.');
     }
 };
+
 
 const showHealthEntry = async (req, res, next) => {
     try {
