@@ -26,12 +26,12 @@
 
 <!-- Edit and Delete Buttons -->
 <div class="entry-actions" style="margin-top: 20px;">
-    <a href="/health-entries/form/<%= healthEntry.id %>">
+    <a href="/healthEntries/form/<%= healthEntry.id %>">
         <button type="button" class="btn btn-warning">Edit Entry</button>
     </a>
     <form
             method="POST"
-            action="/health-entries/delete/<%= healthEntry.id %>"
+            action="/healthEntries/delete/<%= healthEntry.id %>"
             style="display:inline;"
             id="delete-form-<%= healthEntry.id %>"
     >
@@ -42,7 +42,7 @@
 
 <!-- Back to List Button -->
 <div style="margin-top: 20px;">
-    <a href="/health-entries" class="btn btn-secondary">Back to List</a>
+    <a href="/healthEntries" class="btn btn-secondary">Back to List</a>
 </div>
 
 <!-- Script to add confirmation before deleting the entry -->

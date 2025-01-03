@@ -89,7 +89,7 @@ const showHealthEntryForm = async (req, res, next) => {
             const healthEntry = await HealthEntry.findOne({ _id: req.params.id, userId: req.user.id });
             if (!healthEntry) {
                 req.flash("error", "Health entry not found.");
-                return res.redirect("/health-entries");
+                return res.redirect("/healthEntries");
             }
             return res.render("healthEntry", { healthEntry, _csrf: res.locals._csrf });
         }
@@ -112,7 +112,7 @@ const createHealthEntry = async (req, res, next) => {
             mealLog,
             notes,
         });
-        res.redirect("/health-entries");
+        res.redirect("/healthEntries");
     } catch (error) {
         next(error);
     }
@@ -128,9 +128,9 @@ const updateHealthEntry = async (req, res, next) => {
         );
         if (!healthEntry) {
             req.flash("error", "Health entry not found.");
-            return res.redirect("/health-entries");
+            return res.redirect("/healthEntries");
         }
-        res.redirect("/health-entries");
+        res.redirect("/healthEntries");
     } catch (error) {
         next(error);
     }
@@ -146,7 +146,7 @@ const deleteHealthEntry = async (req, res, next) => {
         // Preserve filters and pagination in redirect URL
         const { page, limit, date } = req.query;
 
-        const redirectUrl = `/health-entries?page=${encodeURIComponent(page || 1)}&limit=${encodeURIComponent(limit || 10)}&date=${encodeURIComponent(date || '')}`;
+        const redirectUrl = `/healthEntries?page=${encodeURIComponent(page || 1)}&limit=${encodeURIComponent(limit || 10)}&date=${encodeURIComponent(date || '')}`;
 
         res.redirect(redirectUrl);
     } catch (error) {
