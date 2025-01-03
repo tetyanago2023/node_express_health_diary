@@ -1,0 +1,58 @@
+<!-- /views/healthEntry.ejs -->
+
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %>
+
+<h2>Health Entry Details</h2>
+
+<div class="entry-details">
+    <h3>Date: <%= healthEntry.date.toDateString() %></h3>
+    <p><strong>Blood Sugar Level:</strong> <%= healthEntry.bloodSugarLevel %> mg/dL</p>
+
+    <h4>Physical Activities</h4>
+    <% if (healthEntry.physicalActivities && healthEntry.physicalActivities.length) { %>
+        <ul>
+            <% healthEntry.physicalActivities.forEach(activity => { %>
+                <li>
+                    <strong>Activity:</strong> <%= activity.name %><br>
+                    <strong>Duration:</strong> <%= activity.duration %> mins
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No physical activities recorded for this entry.</p>
+    <% } %>
+</div>
+
+<!-- Edit and Delete Buttons -->
+<div class="entry-actions" style="margin-top: 20px;">
+    <a href="/health-entries/form/<%= healthEntry.id %>">
+        <button type="button" class="btn btn-warning">Edit Entry</button>
+    </a>
+    <form
+            method="POST"
+            action="/health-entries/delete/<%= healthEntry.id %>"
+            style="display:inline;"
+            id="delete-form-<%= healthEntry.id %>"
+    >
+        <input type="hidden" name="_csrf" value="<%= _csrf %>"> <!-- CSRF Token -->
+        <button type="submit" class="btn btn-danger delete-button">Delete Entry</button>
+    </form>
+</div>
+
+<!-- Back to List Button -->
+<div style="margin-top: 20px;">
+    <a href="/health-entries" class="btn btn-secondary">Back to List</a>
+</div>
+
+<!-- Script to add confirmation before deleting the entry -->
+<script>
+    document.querySelector('.delete-button').addEventListener('click', function(event) {
+        const confirmation = confirm("Are you sure you want to delete this health entry?");
+        if (!confirmation) {
+            event.preventDefault(); // Prevent form submission if canceled
+        }
+    });
+</script>
+
+<%- include("partials/footer.ejs") %>

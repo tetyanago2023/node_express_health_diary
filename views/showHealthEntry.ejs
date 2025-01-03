@@ -1,0 +1,42 @@
+<!-- views/showHealthEntry.ejs -->
+
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %>
+
+<h2>Health Entry Details</h2>
+
+<!-- Display health entry details -->
+<table class="table">
+    <tr>
+        <th>Date</th>
+        <td><%= healthEntry.date.toDateString() %></td>
+    </tr>
+    <tr>
+        <th>Blood Sugar Level</th>
+        <td><%= healthEntry.bloodSugarLevel %> mg/dL</td>
+    </tr>
+    <tr>
+        <th>Physical Activities</th>
+        <td>
+            <% if (healthEntry.physicalActivities && healthEntry.physicalActivities.length) { %>
+                <ul>
+                    <% healthEntry.physicalActivities.forEach(activity => { %>
+                        <li>
+                            <strong>Activity:</strong> <%= activity.name %> -
+                            <strong>Duration:</strong> <%= activity.duration %> mins
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                No physical activities recorded.
+            <% } %>
+        </td>
+    </tr>
+</table>
+
+<!-- Back to Health Entries List -->
+<a href="/health-entries">
+    <button class="btn btn-secondary">Back to Health Entries</button>
+</a>
+
+<%- include("partials/footer.ejs") %>
