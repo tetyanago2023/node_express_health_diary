@@ -1,4 +1,4 @@
-// routes/healthyEntry.js
+// routes/healthEntry.js
 
 const express = require("express");
 const router = express.Router();

@@ -106,6 +106,9 @@ app.use((req, res, next) => {
 
 app.use("/sessions", require("./routes/sessionRoutes"));
 
+const auth = require("./middleware/auth");
+const healthEntryRouter = require("./routes/healthEntry");
+app.use("/healthEntries", auth, healthEntryRouter);
 
 const start = async () => {
     try {

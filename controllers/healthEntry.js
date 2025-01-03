@@ -48,7 +48,7 @@ const showHealthEntry = async (req, res, next) => {
         const healthEntry = await HealthEntry.findOne({ _id: req.params.id, userId: req.user.id });
         if (!healthEntry) {
             req.flash("error", "Health entry not found.");
-            return res.redirect("/health-entries");
+            return res.redirect("/healthEntry");
         }
         res.render("showHealthEntry", { healthEntry, _csrf: res.locals._csrf });
     } catch (error) {
