@@ -4,14 +4,14 @@ const mongoose = require('mongoose');
 
 // Define the schema for a health entry
 const healthEntrySchema = new mongoose.Schema({
-    date: { type: Date, required: true },  // Ensure it's a Date type
+    date: { type: Date, required: true },
     bloodSugarLevel: { type: String },
     medicationsTaken: { type: String },
     physicalActivityLog: { type: String },
     mealLog: { type: String },
-    notes: { type: String }
+    notes: { type: String },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true } // Add userId here
 });
-
 
 // Create the model from the schema
 const HealthEntry = mongoose.model('HealthEntry', healthEntrySchema);

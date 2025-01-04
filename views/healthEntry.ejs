@@ -5,74 +5,47 @@
 
 <h1><%= healthEntry ? 'Edit Health Entry' : 'Add New Health Entry' %></h1>
 
-<% if (healthEntry) { %>
-    <!-- Display health entry details -->
-    <div class="entry-details">
-        <h3>Date: <%= healthEntry.date.toDateString() %></h3>
-        <p><strong>Blood Sugar Level:</strong> <%= healthEntry.bloodSugarLevel %> mg/dL</p>
-        <p><strong>Physical Activity Log:</strong></p>
-        <p><%= healthEntry.physicalActivityLog || "No activity logged." %></p>
-        <p><strong>Meal Log:</strong></p>
-        <p><%= healthEntry.mealLog || "No meals logged." %></p>
-        <p><strong>Notes:</strong></p>
-        <p><%= healthEntry.notes || "No additional notes." %></p>
-        <p><strong>Medications Taken:</strong></p>
-        <p><%= healthEntry.medicationsTaken || "No medications logged." %></p>
+<form action="<%= healthEntry ? '/healthEntries/update/' + healthEntry._id : '/healthEntries' %>" method="POST">
+    <!-- Add CSRF token -->
+    <input type="hidden" name="_csrf" value="<%= _csrf %>">
+
+    <div class="form-group">
+        <label for="date">Date:</label>
+        <input type="date" name="date" required value="<%= healthEntry ? healthEntry.date.toISOString().split('T')[0] : '' %>">
     </div>
-<% } else { %>
-    <!-- Form to add a new entry -->
-    <form action="/healthEntries" method="POST">
-        <!-- Add CSRF token -->
-        <input type="hidden" name="_csrf" value="<%= _csrf %>">
 
-        <div class="form-group">
-            <label for="date">Date:</label>
-            <input type="date" name="date" required value="<%= healthEntry ? healthEntry.date.toISOString().split('T')[0] : '' %>">
-        </div>
+    <div class="form-group">
+        <label for="bloodSugarLevel">Blood Sugar Level (mg/dL):</label>
+        <input type="number" name="bloodSugarLevel" required value="<%= healthEntry ? healthEntry.bloodSugarLevel : '' %>">
+    </div>
+    <div class="form-group">
+        <label for="medicationsTaken">Medications Taken:</label>
+        <input type="text" name="medicationsTaken" required value="<%= healthEntry ? healthEntry.medicationsTaken : '' %>">
+    </div>
+    <div class="form-group">
+        <label for="physicalActivityLog">Physical Activity Log:</label>
+        <input type="text" name="physicalActivityLog" required value="<%= healthEntry ? healthEntry.physicalActivityLog : '' %>">
+    </div>
+    <div class="form-group">
+        <label for="mealLog">Meal Log:</label>
+        <input type="text" name="mealLog" required value="<%= healthEntry ? healthEntry.mealLog : '' %>">
+    </div>
+    <div class="form-group">
+        <label for="notes">Additional Notes:</label>
+        <input type="text" name="notes" required value="<%= healthEntry ? healthEntry.notes : '' %>">
+    </div>
 
-        <div class="form-group">
-            <label for="bloodSugarLevel">Blood Sugar Level (mg/dL):</label>
-            <input type="number" name="bloodSugarLevel" required value="<%= healthEntry ? healthEntry.bloodSugarLevel : '' %>">
-        </div>
-        <div class="form-group">
-            <label for="medicationsTaken">Medications Taken:</label>
-<!--            <textarea name="medicationsTaken" rows="4"><%= healthEntry ? healthEntry.medicationsTaken : '' %></textarea>-->
-            <input type="text" name="medicationsTaken" required value="<%= healthEntry ? healthEntry.medicationsTaken : '' %>">
-
-        </div>
-        <div class="form-group">
-            <label for="physicalActivityLog">Physical Activity Log:</label>
-<!--            <textarea name="physicalActivityLog" rows="4"><%= healthEntry ? healthEntry.physicalActivityLog : '' %></textarea>-->
-            <input type="text" name="physicalActivityLog" required value="<%= healthEntry ? healthEntry.physicalActivityLog : '' %>">
-        </div>
-        <div class="form-group">
-            <label for="mealLog">Meal Log:</label>
-<!--            <textarea name="mealLog" rows="4"><%= healthEntry ? healthEntry.mealLog : '' %></textarea>-->
-            <input type="text" name="mealLog" required value="<%= healthEntry ? healthEntry.mealLog : '' %>">
-        </div>
-        <div class="form-group">
-            <label for="notes">Additional Notes:</label>
-<!--            <textarea name="notes" rows="4"><%= healthEntry ? healthEntry.notes : '' %></textarea>-->
-            <input type="text" name="notes" required value="<%= healthEntry ? healthEntry.notes : '' %>">
-
-        </div>
-        <button type="submit" class="btn btn-primary">Save Entry</button>
-    </form>
-<% } %>
+    <button type="submit" class="btn btn-primary"><%= healthEntry ? 'Save Changes' : 'Add Entry' %></button>
+</form>
 
 <!-- Edit and Delete Buttons -->
 <div class="entry-actions" style="margin-top: 20px;">
     <% if (healthEntry) { %>
-        <a href="/healthEntries/form/<%= healthEntry.id %>">
-            <button type="button" class="btn btn-warning">Edit Entry</button>
-        </a>
         <form action="/healthEntries/delete/<%= healthEntry.id %>" method="POST" style="display: inline;" class="delete-form">
             <!-- Add CSRF token for delete form as well -->
             <input type="hidden" name="_csrf" value="<%= _csrf %>">
             <button type="submit" class="btn btn-danger delete-button">Delete Entry</button>
         </form>
-    <% } else { %>
-        <p>No actions available for new entries.</p>
     <% } %>
 </div>
 

@@ -1,4 +1,4 @@
-// controller/healthEntry.js
+// controllers/healthEntry.js
 
 const HealthEntry = require("../models/HealthEntry");
 
@@ -6,7 +6,11 @@ const getAllHealthEntries = async (req, res) => {
     try {
         const { date, bloodSugarLevel, physicalActivity, mealLog, notes, medicationsTaken, page = 1, limit = 10 } = req.query;
 
-        const filters = {};
+        // Parse page and limit values with default fallbacks
+        const pageNum = Number(page) || 1;
+        const limitNum = Number(limit) || 10;
+
+        const filters = { userId: req.user.id }; // Add userId filter to ensure only entries for the current user are fetched
 
         // Add date filter (exact match or range if needed)
         if (date) {
@@ -39,23 +43,23 @@ const getAllHealthEntries = async (req, res) => {
         }
 
         // Pagination settings
-        const skip = (page - 1) * limit;
+        const skip = (pageNum - 1) * limitNum;
 
-        // Query the database
+        // Query the database for health entries belonging to the logged-in user
         const healthEntries = await HealthEntry.find(filters)
             .skip(skip)
-            .limit(Number(limit));
+            .limit(limitNum);
 
         // Count total documents for pagination
         const totalEntries = await HealthEntry.countDocuments(filters);
 
         res.render('healthEntries', {
             healthEntries,
-            currentPage: Number(page),
-            totalPages: Math.ceil(totalEntries / limit),
-            limit: Number(limit),
-            hasPrevPage: page > 1,
-            hasNextPage: page * limit < totalEntries,
+            currentPage: pageNum,
+            totalPages: Math.ceil(totalEntries / limitNum),
+            limit: limitNum,
+            hasPrevPage: pageNum > 1,
+            hasNextPage: pageNum * limitNum < totalEntries,
             dateFilter: date || '',
             bloodSugarFilter: bloodSugarLevel || '',
             activityFilter: physicalActivity || '',
@@ -64,94 +68,72 @@ const getAllHealthEntries = async (req, res) => {
             medicationsFilter: medicationsTaken || '', // Pass medicationsFilter to the view
         });
     } catch (err) {
-        console.error(err);
+        console.error("Error fetching health entries:", err);
         req.flash('error', 'An error occurred while fetching health entries.');
         res.status(500).send('An error occurred while fetching health entries.');
     }
 };
 
-const showHealthEntry = async (req, res, next) => {
+
+const showHealthEntry = async (req, res) => {
     try {
         const healthEntry = await HealthEntry.findOne({ _id: req.params.id, userId: req.user.id });
         if (!healthEntry) {
-            req.flash("error", "Health entry not found1.");
+            req.flash("error", "Health entry not found.");
             return res.redirect("/healthEntries");
         }
         res.render("showHealthEntry", { healthEntry, _csrf: res.locals._csrf });
     } catch (error) {
-        next(error);
+        console.error("Error showing health entry:", error);
+        req.flash("error", "An error occurred while displaying the health entry.");
+        res.redirect("/healthEntries");
     }
 };
 
-const showHealthEntryForm = async (req, res, next) => {
+const showHealthEntryForm = async (req, res) => {
     try {
-        // Log incoming request and params
-        console.log("Request Params - entry id:", req.params); // Log the parameters, especially the 'id'
-        console.log("Request User:", req.user); // Log the user to ensure it's available
-
         if (req.params.id) {
-            console.log("Fetching health entry for ID:", req.params.id); // Log ID being used for fetching
-
             const healthEntry = await HealthEntry.findOne({ _id: req.params.id, userId: req.user.id });
-            console.log("Fetched healthEntry:", healthEntry); // Log the fetched health entry
-
             if (!healthEntry) {
-                req.flash("error", "Health entry not found2.");
-                console.log("Health entry not found for ID:", req.params.id);
+                req.flash("error", "Health entry not found.");
                 return res.redirect("/healthEntries");
             }
-
-            // Pass the healthEntry to the view for editing
-            console.log("Rendering health entry form with editing mode");
             return res.render("healthEntry", { healthEntry, _csrf: res.locals._csrf });
         }
-
-        // If no 'id' is present, render form for a new health entry
-        console.log("Rendering health entry form for new entry");
         res.render("healthEntry", { healthEntry: null, _csrf: res.locals._csrf });
     } catch (error) {
-        console.error("Error in showHealthEntryForm:", error); // Log any errors
-        req.flash("error", "An unexpected error occurred.");
-        return next(error);
+        console.error("Error displaying health entry form:", error);
+        req.flash("error", "An error occurred while displaying the form.");
+        res.redirect("/healthEntries");
     }
 };
 
-
-const createHealthEntry = async (req, res, next) => {
+const createHealthEntry = async (req, res) => {
     try {
-        console.log("Request body:", req.body); // Log the request body for debugging
-
         const { date, bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, notes } = req.body;
-
-        // Check if the date is provided and parse it
         if (!date) {
             req.flash("error", "Date is required.");
-            return res.redirect("/healthEntries/form"); // Redirect back to the form if date is missing
+            return res.redirect("/healthEntries/form");
         }
-
         const healthEntry = new HealthEntry({
-            userId: req.user.id,  // Ensure req.user.id exists
-            date: new Date(date), // Parse the date string into a Date object
+            userId: req.user.id,
+            date: new Date(date),
             bloodSugarLevel,
             medicationsTaken,
             physicalActivityLog,
             mealLog,
             notes,
         });
-
-        // Save the health entry to the database
         await healthEntry.save();
-
-        res.redirect("/healthEntries"); // Redirect to the health entries list page
+        res.redirect("/healthEntries");
     } catch (error) {
-        console.error("Error creating health entry:", error); // Log the error for debugging
+        console.error("Error creating health entry:", error);
         req.flash("error", "An error occurred while creating the health entry.");
-        res.redirect("/healthEntries/form"); // Redirect back to the form if there's an error
+        res.redirect("/healthEntries/form");
     }
 };
 
-
-const updateHealthEntry = async (req, res, next) => {
+const updateHealthEntry = async (req, res) => {
     try {
         const { bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, notes } = req.body;
         const healthEntry = await HealthEntry.findOneAndUpdate(
@@ -160,28 +142,30 @@ const updateHealthEntry = async (req, res, next) => {
             { new: true, runValidators: true }
         );
         if (!healthEntry) {
-            req.flash("error", "Health entry not found3.");
+            req.flash("error", "Health entry not found.");
             return res.redirect("/healthEntries");
         }
         res.redirect("/healthEntries");
     } catch (error) {
-        next(error);
+        console.error("Error updating health entry:", error);
+        req.flash("error", "An error occurred while updating the health entry.");
+        res.redirect("/healthEntries");
     }
 };
 
-const deleteHealthEntry = async (req, res, next) => {
+const deleteHealthEntry = async (req, res) => {
     try {
         const healthEntry = await HealthEntry.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
         if (!healthEntry) {
-            req.flash("error", "Health entry not found4.");
+            req.flash("error", "Health entry not found.");
         }
-
-        // Preserve filters and pagination in redirect URL
         const { page, limit, date } = req.query;
         const redirectUrl = `/healthEntries?page=${encodeURIComponent(page || 1)}&limit=${encodeURIComponent(limit || 10)}&date=${encodeURIComponent(date || '')}`;
         res.redirect(redirectUrl);
     } catch (error) {
-        next(error);
+        console.error("Error deleting health entry:", error);
+        req.flash("error", "An error occurred while deleting the health entry.");
+        res.redirect("/healthEntries");
     }
 };
 
