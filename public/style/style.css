@@ -1,5 +1,4 @@
-/*style.css*/
-
+/* Pagination styles */
 .pagination {
     display: flex;
     justify-content: center;
@@ -73,8 +72,31 @@ table td {
     color: var(--text-color);
 }
 
-input[type="text"] {
+/* Input fields for text and date should have consistent styles */
+input[type="text"], input[type="date"], input[type="number"], input[type="email"], input[type="password"], textarea {
     background-color: var(--input-bg-color);
     color: var(--input-text-color);
     border: 1px solid var(--table-border-color);
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 14px;
+    width: 100%; /* Make input fields full width for better layout */
+}
+
+input[type="date"] {
+    padding: 5px; /* Ensure date input has padding for consistency */
+}
+
+input[type="text"]::placeholder,
+input[type="date"]::placeholder,
+textarea::placeholder {
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Focus effect for input fields */
+input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus, textarea:focus {
+    border-color: #007bff;
+    outline: none;
 }
