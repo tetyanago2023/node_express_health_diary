@@ -19,10 +19,13 @@ app.use(express.static("public"));
 app.use(express.json());
 
 // Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, 'public'))); // Use `path.join`
+app.use(express.static(path.join(__dirname, 'public'))); // Use `path.join` !!!
 
 app.set("view engine", "ejs");
-app.use(require("body-parser").urlencoded({ extended: true }));
+
+// Middleware to parse JSON and form data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Cookie parser
 app.use(cookieParser(process.env.SESSION_SECRET)); // Added

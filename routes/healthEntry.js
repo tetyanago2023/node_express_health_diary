@@ -17,8 +17,8 @@ router.route("/")
     .get(getAllHealthEntries) // Render health entries list with pagination and filtering
     .post(createHealthEntry); // Create a new health entry
 
-// Form handler for adding or editing a health entry (optional :id for editing)
-router.get("/form/:id?", showHealthEntryForm);
+// Form handler for adding or editing a health entry
+router.get("/form/:id?", showHealthEntryForm); // The ? makes :id optional for new entry
 
 // Show a specific health entry
 router.get("/:id", showHealthEntry);

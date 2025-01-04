@@ -24,7 +24,7 @@
 }
 
 /* Style for filter input fields and placeholders */
-#jobs-table input {
+#healthEntries-table input {
     width: 120px; /* Adjust as needed for desired width */
     padding: 5px;
     margin: 0 5px;
@@ -33,7 +33,7 @@
     font-size: 14px;
 }
 
-#jobs-table input::placeholder {
+#healthEntries-table input::placeholder {
     font-size: 12px;
     color: #666;
     font-style: italic;

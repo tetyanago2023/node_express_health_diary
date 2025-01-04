@@ -16,27 +16,69 @@
         <td><%= healthEntry.bloodSugarLevel %> mg/dL</td>
     </tr>
     <tr>
+        <th>Medications Taken</th>
+        <td>
+            <% if (healthEntry.medicationsTaken && healthEntry.medicationsTaken.length) { %>
+                <p><%= healthEntry.medicationsTaken %></p> <!-- Display the string directly -->
+            <% } else { %>
+                No medications recorded.
+            <% } %>
+        </td>
+    </tr>
+    <tr>
         <th>Physical Activities</th>
         <td>
-            <% if (healthEntry.physicalActivities && healthEntry.physicalActivities.length) { %>
-                <ul>
-                    <% healthEntry.physicalActivities.forEach(activity => { %>
-                        <li>
-                            <strong>Activity:</strong> <%= activity.name %> -
-                            <strong>Duration:</strong> <%= activity.duration %> mins
-                        </li>
-                    <% }) %>
-                </ul>
+            <% if (healthEntry.physicalActivityLog && healthEntry.physicalActivityLog.length) { %>
+                <p><%= healthEntry.physicalActivityLog %></p> <!-- Display the string directly -->
             <% } else { %>
                 No physical activities recorded.
             <% } %>
         </td>
     </tr>
+
+    <tr>
+        <th>Meal Log</th>
+        <td>
+            <% if (healthEntry.mealLog && healthEntry.mealLog.length) { %>
+                <p><%= healthEntry.mealLog %></p> <!-- Display the string directly -->
+            <% } else { %>
+                No meal log recorded.
+            <% } %>
+        </td>
+    </tr>
+
+    <tr>
+        <th>Additional Notes</th>
+        <td><%= healthEntry.notes || "No additional notes." %></td>
+    </tr>
 </table>
 
+<!-- Edit and Delete Actions -->
+<div class="entry-actions" style="margin-top: 20px;">
+    <a href="/healthEntries/form/<%= healthEntry.id %>">
+        <button type="button" class="btn btn-warning">Edit Entry</button>
+    </a>
+    <form action="/healthEntries/delete/<%= healthEntry.id %>" method="POST" style="display: inline;">
+        <input type="hidden" name="_csrf" value="<%= _csrf %>"> <!-- CSRF Token -->
+        <button type="submit" class="btn btn-danger delete-button">Delete Entry</button>
+    </form>
+</div>
+
 <!-- Back to Health Entries List -->
-<a href="/health-entries">
-    <button class="btn btn-secondary">Back to Health Entries</button>
-</a>
+<div style="margin-top: 20px;">
+    <a href="/healthEntries">
+        <button class="btn btn-secondary">Back to Health Entries</button>
+    </a>
+</div>
+
+<!-- Script to add confirmation before deleting the entry -->
+<script>
+    document.querySelector('.delete-button').addEventListener('click', function(event) {
+        const confirmation = confirm("Are you sure you want to delete this health entry?");
+        if (!confirmation) {
+            event.preventDefault(); // Prevent form submission if canceled
+        }
+    });
+</script>
 
 <%- include("partials/footer.ejs") %>

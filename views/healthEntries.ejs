@@ -13,8 +13,8 @@
 </div>
 
 <!-- Health Entries Table with Filters in Headers -->
-<form method="GET" action="/health-entries" style="display:inline;">
-    <table id="health-entries-table" class="table">
+<form method="GET" action="/healthEntries" style="display:inline;">
+    <table id="healthEntries-table" class="table">
         <thead>
         <tr>
             <th>Date</th>
@@ -25,36 +25,36 @@
             <th>Notes</th>
             <th colspan="3">Actions</th> <!-- Actions Column Grouped -->
         </tr>
-        <tr id="health-entries-table-header">
+        <tr id="healthEntries-table-header">
             <!-- Date Filter in Header -->
             <th>
-                <input type="date" class="form-control" name="date" placeholder="Filter by Date" value="<%= dateFilter %>">
+                <input type="date" class="form-control" name="date" placeholder="Filter by Date" value="<%= dateFilter || '' %>">
             </th>
             <!-- Blood Sugar Level Filter in Header -->
             <th>
-                <input type="number" class="form-control" name="bloodSugarLevel" placeholder="Filter by Blood Sugar" value="<%= bloodSugarFilter %>">
+                <input type="number" class="form-control" name="bloodSugarLevel" placeholder="Filter by Blood Sugar" value="<%= bloodSugarFilter || '' %>">
             </th>
             <!-- Medications Filter in Header -->
             <th>
-                <input type="text" class="form-control" name="medicationsTaken" placeholder="Filter by Medications" value="<%= medicationsFilter %>">
+                <input type="text" class="form-control" name="medicationsTaken" placeholder="Filter by Medications" value="<%= medicationsFilter || '' %>">
             </th>
             <!-- Physical Activity Filter in Header -->
             <th>
-                <input type="text" class="form-control" name="physicalActivity" placeholder="Filter by Activity" value="<%= activityFilter %>">
+                <input type="text" class="form-control" name="physicalActivity" placeholder="Filter by Activity" value="<%= activityFilter || '' %>">
             </th>
             <!-- Meal Log Filter in Header -->
             <th>
-                <input type="text" class="form-control" name="mealLog" placeholder="Filter by Meal" value="<%= mealLogFilter %>">
+                <input type="text" class="form-control" name="mealLog" placeholder="Filter by Meal" value="<%= mealLogFilter || '' %>">
             </th>
             <!-- Notes Filter in Header -->
             <th>
-                <input type="text" class="form-control" name="notes" placeholder="Filter by Notes" value="<%= notesFilter %>">
+                <input type="text" class="form-control" name="notes" placeholder="Filter by Notes" value="<%= notesFilter || '' %>">
             </th>
             <th colspan="3">
                 <!-- Apply Filters Button -->
                 <button type="submit" class="btn btn-info" style="margin-top: 5px;">Apply Filters</button>
                 <!-- Reset Filters Button -->
-                <a href="/health-entries" class="btn btn-secondary" style="margin-top: 5px;">Reset Filters</a>
+                <a href="/healthEntries" class="btn btn-secondary" style="margin-top: 5px;">Reset Filters</a>
             </th>
         </tr>
         </thead>
@@ -66,29 +66,29 @@
                     <td><%= entry.bloodSugarLevel %></td>
                     <td>
                         <% if (entry.medicationsTaken && entry.medicationsTaken.length) { %>
-                            <ul>
-                                <% entry.medicationsTaken.forEach(med => { %>
-                                    <li><%= med %></li>
-                                <% }) %>
-                            </ul>
+                            <p><%= entry.medicationsTaken %></p> <!-- Display the string directly -->
                         <% } else { %>
                             No medications listed
                         <% } %>
                     </td>
                     <td>
-                        <% entry.physicalActivityLog.forEach(activity => { %>
-                            <div><%= activity.activity %> (<%= activity.duration %> mins)</div>
-                        <% }) %>
+                        <% if (entry.physicalActivityLog && entry.physicalActivityLog.length) { %>
+                            <p><%= entry.physicalActivityLog %></p> <!-- Display the string directly -->
+                        <% } else { %>
+                            No activity logged
+                        <% } %>
                     </td>
                     <td>
-                        <% entry.mealLog.forEach(meal => { %>
-                            <div><%= meal.foodName %> - <%= meal.carbs %>g carbs</div>
-                        <% }) %>
+                        <% if (entry.mealLog && entry.mealLog.length) { %>
+                            <p><%= entry.mealLog %></p> <!-- Display the string directly -->
+                        <% } else { %>
+                            No meal log
+                        <% } %>
                     </td>
                     <td><%= entry.notes %></td>
                     <td>
                         <!-- Show Health Entry Button -->
-                        <a href="/health-entries/<%= entry.id %>">
+                        <a href="/healthEntries/<%= entry.id %>">
                             <button type="button" class="btn btn-info">Show Entry</button>
                         </a>
                     </td>
@@ -102,7 +102,7 @@
                         <!-- Delete Button -->
                         <form
                                 method="POST"
-                                action="/health-entries/delete/<%= entry.id %>?page=<%= currentPage %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>"
+                                action="/healthEntries/delete/<%= entry.id %>?page=<%= currentPage %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>"
                                 style="display:inline;"
                                 id="delete-form-<%= entry.id %>"
                         >
@@ -124,7 +124,7 @@
 <!-- Pagination Controls -->
 <div class="pagination">
     <% if (hasPrevPage) { %>
-        <a href="/health-entries?page=<%= currentPage - 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>" class="btn btn-secondary">Previous</a>
+        <a href="/healthEntries?page=<%= currentPage - 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>" class="btn btn-secondary">Previous</a>
     <% } else { %>
         <button class="btn btn-secondary" disabled>Previous</button>
     <% } %>
@@ -132,7 +132,7 @@
     <span>Page <%= currentPage %> of <%= totalPages %></span>
 
     <% if (hasNextPage) { %>
-        <a href="/health-entries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>" class="btn btn-secondary">Next</a>
+        <a href="/healthEntries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>" class="btn btn-secondary">Next</a>
     <% } else { %>
         <button class="btn btn-secondary" disabled>Next</button>
     <% } %>
