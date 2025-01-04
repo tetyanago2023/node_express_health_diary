@@ -22,6 +22,11 @@ const getAllHealthEntries = async (req, res) => {
             filters.bloodSugarLevel = Number(bloodSugarLevel); // Ensure it's a number
         }
 
+        // Add medications filter (case-insensitive search)
+        if (medicationsTaken) {
+            filters.medicationsTaken = { $regex: medicationsTaken, $options: 'i' };
+        }
+
         // Add physical activity filter (case-insensitive search)
         if (physicalActivity) {
             filters.physicalActivityLog = { $regex: physicalActivity, $options: 'i' }; // Updated to match plain string
@@ -35,11 +40,6 @@ const getAllHealthEntries = async (req, res) => {
         // Add notes filter (case-insensitive search)
         if (notes) {
             filters.notes = { $regex: notes, $options: 'i' };
-        }
-
-        // Add medications filter (case-insensitive search)
-        if (medicationsTaken) {
-            filters['medications.name'] = { $regex: medicationsTaken, $options: 'i' };
         }
 
         // Pagination settings
