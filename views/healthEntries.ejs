@@ -82,10 +82,15 @@
                         <% if (entry.mealLog && entry.mealLog.length) { %>
                             <p><%= entry.mealLog %></p> <!-- Display the string directly -->
                         <% } else { %>
-                            No meal log
+                            No meal logged
                         <% } %>
                     </td>
-                    <td><%= entry.notes %></td>
+                    <td>
+                        <% if (entry.notes && entry.notes.length) { %>
+                            <p><%= entry.notes %></p> <!-- Display the string directly -->
+                        <% } else { %>
+                            No notes
+                        <% } %>
                     <td>
                         <!-- Show Health Entry Button -->
                         <a href="/healthEntries/<%= entry.id %>">

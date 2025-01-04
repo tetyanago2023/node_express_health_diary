@@ -16,23 +16,23 @@
 
     <div class="form-group">
         <label for="bloodSugarLevel">Blood Sugar Level (mg/dL):</label>
-        <input type="number" name="bloodSugarLevel" required value="<%= healthEntry ? healthEntry.bloodSugarLevel : '' %>">
+        <input type="number" name="bloodSugarLevel" value="<%= healthEntry ? healthEntry.bloodSugarLevel : '' %>">
     </div>
     <div class="form-group">
         <label for="medicationsTaken">Medications Taken:</label>
-        <input type="text" name="medicationsTaken" required value="<%= healthEntry ? healthEntry.medicationsTaken : '' %>">
+        <input type="text" name="medicationsTaken" value="<%= healthEntry ? healthEntry.medicationsTaken : '' %>">
     </div>
     <div class="form-group">
         <label for="physicalActivityLog">Physical Activity Log:</label>
-        <input type="text" name="physicalActivityLog" required value="<%= healthEntry ? healthEntry.physicalActivityLog : '' %>">
+        <input type="text" name="physicalActivityLog" value="<%= healthEntry ? healthEntry.physicalActivityLog : '' %>">
     </div>
     <div class="form-group">
         <label for="mealLog">Meal Log:</label>
-        <input type="text" name="mealLog" required value="<%= healthEntry ? healthEntry.mealLog : '' %>">
+        <input type="text" name="mealLog" value="<%= healthEntry ? healthEntry.mealLog : '' %>">
     </div>
     <div class="form-group">
         <label for="notes">Additional Notes:</label>
-        <input type="text" name="notes" required value="<%= healthEntry ? healthEntry.notes : '' %>">
+        <input type="text" name="notes" value="<%= healthEntry ? healthEntry.notes : '' %>">
     </div>
 
     <button type="submit" class="btn btn-primary"><%= healthEntry ? 'Save Changes' : 'Add Entry' %></button>
