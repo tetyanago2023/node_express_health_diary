@@ -3,15 +3,23 @@
 <div class="py-3">
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="text-center">Health Diary for Type 2 Diabetes Management</h1>
-        <button id="theme-toggle" class="btn btn-secondary">Switch to Dark Mode</button>
+        <!-- Container for Theme Toggle and User Info -->
+        <div class="d-flex align-items-center gap-3">
+            <!-- Dark/Light Mode Toggle Button -->
+            <button id="theme-toggle" class="btn btn-secondary">Switch to Dark Mode</button>
+
+            <% if (user) { %>
+                <!-- User Info and Logoff Button -->
+                <div class="user-info-container d-flex align-items-center gap-2">
+                    <span class="user-message">User <strong><%= user.name %></strong> is logged on.</span>
+                    <form method="POST" action="/sessions/logoff">
+                        <input type="hidden" name="_csrf" value="<%= _csrf %>">
+                        <button class="btn btn-danger">Logoff</button>
+                    </form>
+                </div>
+            <% } %>
+        </div>
     </div>
-    <% if (user) { %>
-        <p class="text-center">User <strong><%= user.name %></strong> is logged on.</p>
-        <form method="POST" action="/sessions/logoff" class="text-center">
-            <input type="hidden" name="_csrf" value="<%= _csrf %>">
-            <button class="btn btn-danger">Logoff</button>
-        </form>
-    <% } %>
     <% if (errors) { %>
         <% errors.forEach((err) => { %>
             <div class="alert alert-danger" role="alert">

@@ -72,7 +72,7 @@ table td {
     color: var(--text-color);
 }
 
-/* Input fields for text and date should have consistent styles */
+/* Input fields for text, date, number, email, password, and textarea */
 input[type="text"], input[type="date"], input[type="number"], input[type="email"], input[type="password"], textarea {
     background-color: var(--input-bg-color);
     color: var(--input-text-color);
@@ -80,13 +80,12 @@ input[type="text"], input[type="date"], input[type="number"], input[type="email"
     border-radius: 4px;
     padding: 5px;
     font-size: 14px;
-    width: 100%; /* Make input fields full width for better layout */
+    width: 100%; /* Full width for better layout */
+    max-width: 300px; /* Ensure input fields don't grow too wide */
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
-input[type="date"] {
-    padding: 5px; /* Ensure date input has padding for consistency */
-}
-
+/* Placeholder styles for all inputs */
 input[type="text"]::placeholder,
 input[type="date"]::placeholder,
 textarea::placeholder {
@@ -96,7 +95,46 @@ textarea::placeholder {
 }
 
 /* Focus effect for input fields */
-input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus, textarea:focus {
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
     border-color: #007bff;
     outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Subtle glow effect */
+}
+
+/* Hover effect for input fields */
+input[type="text"]:hover,
+input[type="date"]:hover,
+input[type="number"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+textarea:hover {
+    border-color: #0056b3;
+}
+
+/* Dark mode styles */
+[data-theme="dark"] input[type="text"],
+[data-theme="dark"] input[type="date"],
+[data-theme="dark"] input[type="number"],
+[data-theme="dark"] input[type="email"],
+[data-theme="dark"] input[type="password"],
+[data-theme="dark"] textarea {
+    background-color: var(--input-bg-color);
+    color: var(--input-text-color);
+    border-color: var(--table-border-color);
+}
+
+/* Dark mode focus effect */
+[data-theme="dark"] input[type="text"]:focus,
+[data-theme="dark"] input[type="date"]:focus,
+[data-theme="dark"] input[type="number"]:focus,
+[data-theme="dark"] input[type="email"]:focus,
+[data-theme="dark"] input[type="password"]:focus,
+[data-theme="dark"] textarea:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(128, 189, 255, 0.5);
 }
