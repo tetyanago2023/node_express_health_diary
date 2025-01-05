@@ -123,6 +123,10 @@ const showHealthEntryForm = async (req, res) => {
                 req.flash("error", "Health entry not found.");
                 return res.redirect("/healthEntries");
             }
+
+            // Log the time value to check if it's correctly retrieved
+            console.log("Time value:", healthEntry.time);
+
             return res.render("healthEntry", { healthEntry, _csrf: res.locals._csrf });
         }
         res.render("healthEntry", { healthEntry: null, _csrf: res.locals._csrf });
@@ -167,15 +171,10 @@ const createHealthEntry = async (req, res) => {
 
 const updateHealthEntry = async (req, res) => {
     try {
-        const { bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, notes, time } = req.body;
+        const { bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, notes, time, date } = req.body;
 
-        // Parse the time field if provided
-        let timeObj;
-        if (time) {
-            const [hour, minute] = time.split(':'); // Split time into hour and minute
-            timeObj = new Date(req.body.date); // Create a date object from the provided date
-            timeObj.setHours(hour, minute, 0, 0); // Set the time on the date object
-        }
+        // Ensure that the time is stored as a string (HH:mm)
+        let timeObj = time ? time : undefined;
 
         const healthEntry = await HealthEntry.findOneAndUpdate(
             { _id: req.params.id, userId: req.user.id },
@@ -185,7 +184,8 @@ const updateHealthEntry = async (req, res) => {
                 physicalActivityLog,
                 mealLog,
                 notes,
-                time: timeObj || undefined // Update the time field if it is provided
+                time: timeObj, // Store the time as a string (HH:mm)
+                date: new Date(date) // Keep the date as a Date object
             },
             { new: true, runValidators: true }
         );
