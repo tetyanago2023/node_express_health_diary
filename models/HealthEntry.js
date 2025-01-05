@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 // Define the schema for a health entry
 const healthEntrySchema = new mongoose.Schema({
     date: { type: Date, required: true },
+    time: { type: String, required: true },
     bloodSugarLevel: { type: String },
     medicationsTaken: { type: String },
     physicalActivityLog: { type: String },

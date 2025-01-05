@@ -2,9 +2,11 @@
 
 const HealthEntry = require("../models/HealthEntry");
 
+// controllers/healthEntry.js
+
 const getAllHealthEntries = async (req, res) => {
     try {
-        const { date, bloodSugarLevel, physicalActivity, mealLog, notes, medicationsTaken, page = 1, limit = 10 } = req.query;
+        const { date, bloodSugarLevel, physicalActivity, mealLog, notes, medicationsTaken, timeFrom, timeTo, page = 1, limit = 10 } = req.query;
 
         // Parse page and limit values with default fallbacks
         const pageNum = Number(page) || 1;
@@ -42,6 +44,26 @@ const getAllHealthEntries = async (req, res) => {
             filters.notes = { $regex: notes, $options: 'i' };
         }
 
+        // Add time filtering logic
+        let timeFilter = {};
+        if (timeFrom) {
+            const [hourFrom, minuteFrom] = timeFrom.split(':');
+            const fromTime = new Date();
+            fromTime.setHours(hourFrom, minuteFrom, 0, 0); // Set the time for the "timeFrom" filter
+            timeFilter.$gte = fromTime; // Greater than or equal to the fromTime
+        }
+
+        if (timeTo) {
+            const [hourTo, minuteTo] = timeTo.split(':');
+            const toTime = new Date();
+            toTime.setHours(hourTo, minuteTo, 0, 0); // Set the time for the "timeTo" filter
+            timeFilter.$lte = toTime; // Less than or equal to the toTime
+        }
+
+        if (Object.keys(timeFilter).length > 0) {
+            filters.time = timeFilter; // Add time filter to the filters
+        }
+
         // Pagination settings
         const skip = (pageNum - 1) * limitNum;
 
@@ -63,9 +85,11 @@ const getAllHealthEntries = async (req, res) => {
             dateFilter: date || '',
             bloodSugarFilter: bloodSugarLevel || '',
             activityFilter: physicalActivity || '',
-            mealLogFilter: mealLog || '',  // Pass mealLogFilter to the view
-            notesFilter: notes || '',      // Pass notesFilter to the view
-            medicationsFilter: medicationsTaken || '', // Pass medicationsFilter to the view
+            mealLogFilter: mealLog || '',
+            notesFilter: notes || '',
+            medicationsFilter: medicationsTaken || '',
+            timeFromFilter: timeFrom || '',
+            timeToFilter: timeTo || ''
         });
     } catch (err) {
         console.error("Error fetching health entries:", err);
@@ -108,22 +132,29 @@ const showHealthEntryForm = async (req, res) => {
     }
 };
 
+// controllers/healthEntry.js
+
 const createHealthEntry = async (req, res) => {
     try {
-        const { date, bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, notes } = req.body;
-        if (!date) {
-            req.flash("error", "Date is required.");
+        const { date, time, bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, notes } = req.body;
+
+        if (!date || !time) {
+            req.flash("error", "Date and time are required.");
             return res.redirect("/healthEntries/form");
         }
+
+        // Save the time directly as a string
         const healthEntry = new HealthEntry({
             userId: req.user.id,
-            date: new Date(date),
+            date: new Date(date), // Save the date as a Date object
+            time, // Save the time as a string (e.g., "14:30")
             bloodSugarLevel,
             medicationsTaken,
             physicalActivityLog,
             mealLog,
             notes,
         });
+
         await healthEntry.save();
         res.redirect("/healthEntries");
     } catch (error) {
@@ -135,16 +166,34 @@ const createHealthEntry = async (req, res) => {
 
 const updateHealthEntry = async (req, res) => {
     try {
-        const { bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, notes } = req.body;
+        const { bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, notes, time } = req.body;
+
+        // Parse the time field if provided
+        let timeObj;
+        if (time) {
+            const [hour, minute] = time.split(':'); // Split time into hour and minute
+            timeObj = new Date(req.body.date); // Create a date object from the provided date
+            timeObj.setHours(hour, minute, 0, 0); // Set the time on the date object
+        }
+
         const healthEntry = await HealthEntry.findOneAndUpdate(
             { _id: req.params.id, userId: req.user.id },
-            { bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, notes },
+            {
+                bloodSugarLevel,
+                medicationsTaken,
+                physicalActivityLog,
+                mealLog,
+                notes,
+                time: timeObj || undefined // Update the time field if it is provided
+            },
             { new: true, runValidators: true }
         );
+
         if (!healthEntry) {
             req.flash("error", "Health entry not found.");
             return res.redirect("/healthEntries");
         }
+
         res.redirect("/healthEntries");
     } catch (error) {
         console.error("Error updating health entry:", error);

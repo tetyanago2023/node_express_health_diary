@@ -1,5 +1,3 @@
-<!-- /views/healthEntries.ejs -->
-
 <%- include("partials/head.ejs") %>
 <%- include("partials/header.ejs") %>
 
@@ -18,7 +16,8 @@
         <thead>
         <tr>
             <th>Date</th>
-            <th>Blood Sugar Level</th>
+            <th>Time</th>
+            <th>Blood Sugar Level, mg/dL</th>
             <th>Medications Taken</th>
             <th>Physical Activity Log</th>
             <th>Meal Log</th>
@@ -29,6 +28,11 @@
             <!-- Date Filter in Header -->
             <th>
                 <input type="date" class="form-control" name="date" placeholder="Filter by Date" value="<%= dateFilter || '' %>">
+            </th>
+            <!-- Time Filter in Header -->
+            <th>
+                <input type="time" class="form-control" name="timeFrom" placeholder="From Time" value="<%= timeFromFilter || '' %>">
+                <input type="time" class="form-control" name="timeTo" placeholder="To Time" value="<%= timeToFilter || '' %>">
             </th>
             <!-- Blood Sugar Level Filter in Header -->
             <th>
@@ -63,55 +67,55 @@
             <% healthEntries.forEach((entry) => { %>
                 <tr>
                     <td><%= entry.date.toDateString() %></td>
+                    <td>
+                        <% if (entry.time) { %>
+                            <%= entry.time %>
+                        <% } else { %>
+                            No time logged
+                        <% } %>
+                    </td>
                     <td><%= entry.bloodSugarLevel %></td>
                     <td>
                         <% if (entry.medicationsTaken && entry.medicationsTaken.length) { %>
-                            <p><%= entry.medicationsTaken %></p> <!-- Display the string directly -->
+                            <p><%= entry.medicationsTaken %></p>
                         <% } else { %>
                             No medications listed
                         <% } %>
                     </td>
                     <td>
                         <% if (entry.physicalActivityLog && entry.physicalActivityLog.length) { %>
-                            <p><%= entry.physicalActivityLog %></p> <!-- Display the string directly -->
+                            <p><%= entry.physicalActivityLog %></p>
                         <% } else { %>
                             No activity logged
                         <% } %>
                     </td>
                     <td>
                         <% if (entry.mealLog && entry.mealLog.length) { %>
-                            <p><%= entry.mealLog %></p> <!-- Display the string directly -->
+                            <p><%= entry.mealLog %></p>
                         <% } else { %>
                             No meal logged
                         <% } %>
                     </td>
                     <td>
                         <% if (entry.notes && entry.notes.length) { %>
-                            <p><%= entry.notes %></p> <!-- Display the string directly -->
+                            <p><%= entry.notes %></p>
                         <% } else { %>
                             No notes
                         <% } %>
+                    </td>
                     <td>
-                        <!-- Show Health Entry Button -->
                         <a href="/healthEntries/<%= entry.id %>">
                             <button type="button" class="btn btn-info">Show Entry</button>
                         </a>
                     </td>
                     <td>
-                        <!-- Edit Button -->
                         <a href="/healthEntries/form/<%= entry.id %>">
                             <button type="button" class="btn btn-warning">Edit Entry</button>
                         </a>
                     </td>
                     <td>
-                        <!-- Delete Button -->
-                        <form
-                                method="POST"
-                                action="/healthEntries/delete/<%= entry.id %>?page=<%= currentPage %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>"
-                                style="display:inline;"
-                                id="delete-form-<%= entry.id %>"
-                        >
-                            <input type="hidden" name="_csrf" value="<%= _csrf %>"> <!-- CSRF Token -->
+                        <form method="POST" action="/healthEntries/delete/<%= entry.id %>?page=<%= currentPage %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" style="display:inline;" id="delete-form-<%= entry.id %>">
+                            <input type="hidden" name="_csrf" value="<%= _csrf %>">
                             <button type="submit" class="btn btn-danger delete-button">Delete Entry</button>
                         </form>
                     </td>
@@ -129,7 +133,7 @@
 <!-- Pagination Controls -->
 <div class="pagination">
     <% if (hasPrevPage) { %>
-        <a href="/healthEntries?page=<%= currentPage - 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>" class="btn btn-secondary">Previous</a>
+        <a href="/healthEntries?page=<%= currentPage - 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Previous</a>
     <% } else { %>
         <button class="btn btn-secondary" disabled>Previous</button>
     <% } %>
@@ -137,7 +141,7 @@
     <span>Page <%= currentPage %> of <%= totalPages %></span>
 
     <% if (hasNextPage) { %>
-        <a href="/healthEntries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>" class="btn btn-secondary">Next</a>
+        <a href="/healthEntries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Next</a>
     <% } else { %>
         <button class="btn btn-secondary" disabled>Next</button>
     <% } %>
@@ -145,11 +149,14 @@
 
 <!-- Script to add confirmation before deleting a health entry -->
 <script>
+    // Attach click event listeners to all delete buttons
     document.querySelectorAll('.delete-button').forEach(button => {
         button.addEventListener('click', function(event) {
+            // Show confirmation dialog
             const confirmation = confirm("Are you sure you want to delete this health entry?");
             if (!confirmation) {
-                event.preventDefault(); // Prevent form submission if canceled
+                // Prevent form submission if the user cancels
+                event.preventDefault();
             }
         });
     });
