@@ -19,6 +19,24 @@ const getAllHealthEntries = async (req, res) => {
             filters.date = new Date(date); // Parse the date input correctly
         }
 
+        // Time filtering logic (update to use string comparison)
+        let timeFilter = {};
+        if (timeFrom) {
+            // Ensure timeFrom is in HH:mm format and apply filter
+            const timeFromStr = timeFrom.padStart(5, '0'); // Ensure it has HH:mm format
+            timeFilter.$gte = timeFromStr; // Greater than or equal to the timeFrom
+        }
+
+        if (timeTo) {
+            // Ensure timeTo is in HH:mm format and apply filter
+            const timeToStr = timeTo.padStart(5, '0'); // Ensure it has HH:mm format
+            timeFilter.$lte = timeToStr; // Less than or equal to the timeTo
+        }
+
+        if (Object.keys(timeFilter).length > 0) {
+            filters.time = timeFilter; // Add time filter to the filters
+        }
+
         // Add blood sugar level filter (exact match or range)
         if (bloodSugarLevel) {
             filters.bloodSugarLevel = Number(bloodSugarLevel); // Ensure it's a number
@@ -42,26 +60,6 @@ const getAllHealthEntries = async (req, res) => {
         // Add notes filter (case-insensitive search)
         if (notes) {
             filters.notes = { $regex: notes, $options: 'i' };
-        }
-
-        // Add time filtering logic
-        let timeFilter = {};
-        if (timeFrom) {
-            const [hourFrom, minuteFrom] = timeFrom.split(':');
-            const fromTime = new Date();
-            fromTime.setHours(hourFrom, minuteFrom, 0, 0); // Set the time for the "timeFrom" filter
-            timeFilter.$gte = fromTime; // Greater than or equal to the fromTime
-        }
-
-        if (timeTo) {
-            const [hourTo, minuteTo] = timeTo.split(':');
-            const toTime = new Date();
-            toTime.setHours(hourTo, minuteTo, 0, 0); // Set the time for the "timeTo" filter
-            timeFilter.$lte = toTime; // Less than or equal to the toTime
-        }
-
-        if (Object.keys(timeFilter).length > 0) {
-            filters.time = timeFilter; // Add time filter to the filters
         }
 
         // Pagination settings
@@ -98,7 +96,6 @@ const getAllHealthEntries = async (req, res) => {
         res.status(500).send('An error occurred while fetching health entries.');
     }
 };
-
 
 const showHealthEntry = async (req, res) => {
     try {
