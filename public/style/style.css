@@ -72,8 +72,14 @@ table td {
     color: var(--text-color);
 }
 
-/* Input fields for text, date, number, email, password, and textarea */
-input[type="text"], input[type="date"], input[type="number"], input[type="email"], input[type="password"], textarea {
+/* Input fields for text, date, number, email, password, time, and textarea */
+input[type="text"],
+input[type="date"],
+input[type="time"], /* Added */
+input[type="number"],
+input[type="email"],
+input[type="password"],
+textarea {
     background-color: var(--input-bg-color);
     color: var(--input-text-color);
     border: 1px solid var(--table-border-color);
@@ -88,6 +94,7 @@ input[type="text"], input[type="date"], input[type="number"], input[type="email"
 /* Placeholder styles for all inputs */
 input[type="text"]::placeholder,
 input[type="date"]::placeholder,
+input[type="time"]::placeholder, /* Added */
 textarea::placeholder {
     font-size: 12px;
     color: #666;
@@ -97,6 +104,7 @@ textarea::placeholder {
 /* Focus effect for input fields */
 input[type="text"]:focus,
 input[type="date"]:focus,
+input[type="time"]:focus, /* Added */
 input[type="number"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
@@ -109,6 +117,7 @@ textarea:focus {
 /* Hover effect for input fields */
 input[type="text"]:hover,
 input[type="date"]:hover,
+input[type="time"]:hover, /* Added */
 input[type="number"]:hover,
 input[type="email"]:hover,
 input[type="password"]:hover,
@@ -119,6 +128,7 @@ textarea:hover {
 /* Dark mode styles */
 [data-theme="dark"] input[type="text"],
 [data-theme="dark"] input[type="date"],
+[data-theme="dark"] input[type="time"], /* Added */
 [data-theme="dark"] input[type="number"],
 [data-theme="dark"] input[type="email"],
 [data-theme="dark"] input[type="password"],
@@ -131,6 +141,7 @@ textarea:hover {
 /* Dark mode focus effect */
 [data-theme="dark"] input[type="text"]:focus,
 [data-theme="dark"] input[type="date"]:focus,
+[data-theme="dark"] input[type="time"]:focus, /* Added */
 [data-theme="dark"] input[type="number"]:focus,
 [data-theme="dark"] input[type="email"]:focus,
 [data-theme="dark"] input[type="password"]:focus,
