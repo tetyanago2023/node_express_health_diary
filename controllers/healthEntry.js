@@ -69,6 +69,7 @@ const getAllHealthEntries = async (req, res) => {
 
         // Query the database for health entries belonging to the logged-in user
         const healthEntries = await HealthEntry.find(filters)
+            .sort({ date: -1 }) // Sort by date in descending order
             .skip(skip)
             .limit(limitNum);
 
