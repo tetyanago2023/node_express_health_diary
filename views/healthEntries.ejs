@@ -105,18 +105,18 @@
                     </td>
                     <td>
                         <a href="/healthEntries/<%= entry.id %>">
-                            <button type="button" class="btn btn-info">Show Entry</button>
+                            <button type="button" class="btn btn-info">Show</button>
                         </a>
                     </td>
                     <td>
                         <a href="/healthEntries/form/<%= entry.id %>">
-                            <button type="button" class="btn btn-warning">Edit Entry</button>
+                            <button type="button" class="btn btn-warning">Edit</button>
                         </a>
                     </td>
                     <td>
                         <form method="POST" action="/healthEntries/delete/<%= entry.id %>?page=<%= currentPage %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" style="display:inline;" id="delete-form-<%= entry.id %>">
                             <input type="hidden" name="_csrf" value="<%= _csrf %>">
-                            <button type="submit" class="btn btn-danger delete-button">Delete Entry</button>
+                            <button type="submit" class="btn btn-danger delete-button">Delete</button>
                         </form>
                     </td>
                 </tr>
