@@ -5,10 +5,15 @@
         <h1 class="text-center">Health Diary for Type 2 Diabetes Management</h1>
         <!-- Container for Theme Toggle and User Info -->
         <div class="d-flex align-items-center gap-3">
+<!--            &lt;!&ndash; Dark/Light Mode Toggle Button &ndash;&gt;-->
+<!--            <button id="theme-toggle" class="btn btn-secondary">Switch to Dark Mode</button>-->
             <!-- Dark/Light Mode Toggle Button -->
-            <button id="theme-toggle" class="btn btn-secondary">Switch to Dark Mode</button>
+            <button id="theme-toggle" class="btn btn-secondary d-flex align-items-center">
+                <i id="theme-icon" class="fa-solid fa-moon"></i>
+            </button>
 
-            <% if (user) { %>
+
+        <% if (user) { %>
                 <!-- User Info and Logoff Button -->
                 <div class="user-info-container d-flex align-items-center gap-2">
                     <span class="user-message">User <strong><%= user.name %></strong> is logged on.</span>

@@ -20,6 +20,7 @@ const registerDo = async (req, res, next) => {
         if (e.constructor.name === "ValidationError") {
             parseVErr(e, req);
         } else if (e.name === "MongoServerError" && e.code === 11000) {
+            console.error("Duplicate key error:", e.keyValue); // Debug
             req.flash("error", "That email address is already registered.");
         } else {
             return next(e);

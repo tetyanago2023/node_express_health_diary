@@ -18,6 +18,8 @@ const UserSchema = new mongoose.Schema({
             'Please provide a valid email',
         ],
         unique: true,
+        lowercase: true, // Automatically convert emails to lowercase
+        trim: true,      // Trim whitespace
     },
     password: {
         type: String,
@@ -45,6 +47,7 @@ const UserSchema = new mongoose.Schema({
 UserSchema.pre('save', async function () {
     if (this.isModified('password')) {
         const salt = await bcrypt.genSalt(10);
+        console.log("Hashing password for:", this.email); // Debug
         this.password = await bcrypt.hash(this.password, salt);
     }
 });
