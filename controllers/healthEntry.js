@@ -2,8 +2,6 @@
 
 const HealthEntry = require("../models/HealthEntry");
 
-// controllers/healthEntry.js
-
 const getAllHealthEntries = async (req, res) => {
     try {
         const { date, bloodSugarLevel, physicalActivity, mealLog, notes, medicationsTaken, timeFrom, timeTo, page = 1, limit = 10 } = req.query;
