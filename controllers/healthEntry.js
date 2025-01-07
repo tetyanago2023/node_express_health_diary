@@ -121,6 +121,7 @@ const showHealthEntryForm = async (req, res) => {
 
             // Log the time value to check if it's correctly retrieved
             console.log("Time value:", healthEntry.time);
+            console.log("Date value:", healthEntry.date);
 
             return res.render("healthEntry", { healthEntry, _csrf: res.locals._csrf });
         }
