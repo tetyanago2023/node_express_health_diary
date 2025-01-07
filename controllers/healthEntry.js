@@ -4,11 +4,11 @@ const HealthEntry = require("../models/HealthEntry");
 
 const getAllHealthEntries = async (req, res) => {
     try {
-        const { date, bloodSugarLevel, physicalActivity, mealLog, notes, medicationsTaken, timeFrom, timeTo, page = 1, limit = 10 } = req.query;
+        const { date, bloodSugarLevel, physicalActivity, mealLog, notes, medicationsTaken, timeFrom, timeTo, page = 1, limit = 5 } = req.query;
 
         // Parse page and limit values with default fallbacks
         const pageNum = Number(page) || 1;
-        const limitNum = Number(limit) || 10;
+        const limitNum = Number(limit) || 5;
 
         const filters = { userId: req.user.id }; // Add userId filter to ensure only entries for the current user are fetched
 

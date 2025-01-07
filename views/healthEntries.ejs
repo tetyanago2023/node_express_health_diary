@@ -24,7 +24,8 @@
             <th>Physical Activity Log</th>
             <th>Meal Log</th>
             <th>Notes</th>
-            <th colspan="3">Actions</th> <!-- Actions Column Grouped -->
+<!--            <th colspan="3">Actions</th> &lt;!&ndash; Actions Column Grouped &ndash;&gt;-->
+            <th colspan="2">Actions</th> <!-- Actions Column Grouped -->
         </tr>
         <tr id="healthEntries-table-header">
             <!-- Date Filter in Header -->
@@ -58,7 +59,7 @@
             </th>
             <th colspan="3">
                 <!-- Apply Filters Button -->
-                <button type="submit" class="btn btn-info" style="margin-top: 5px;">Apply Filters</button>
+                <button type="submit" class="btn btn-primary" style="margin-top: 5px;">Apply Filters</button>
                 <!-- Reset Filters Button -->
                 <a href="/healthEntries" class="btn btn-secondary" style="margin-top: 5px;">Reset Filters</a>
             </th>
@@ -107,20 +108,20 @@
                     </td>
                     <td>
                         <a href="/healthEntries/<%= entry.id %>">
-                            <button type="button" class="btn btn-info">Show</button>
+                            <button type="button" class="btn btn-primary">Show</button>
                         </a>
                     </td>
                     <td>
                         <a href="/healthEntries/form/<%= entry.id %>">
-                            <button type="button" class="btn btn-warning">Edit</button>
+                            <button type="button" class="btn btn-secondary">Edit</button>
                         </a>
                     </td>
-                    <td>
-                        <form method="POST" action="/healthEntries/delete/<%= entry.id %>?page=<%= currentPage %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" style="display:inline;" id="delete-form-<%= entry.id %>">
-                            <input type="hidden" name="_csrf" value="<%= _csrf %>">
-                            <button type="submit" class="btn btn-danger delete-button">Delete</button>
-                        </form>
-                    </td>
+<!--                    <td>-->
+<!--                        <form method="POST" action="/healthEntries/delete/<%= entry.id %>?page=<%= currentPage %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" style="display:inline;" id="delete-form-<%= entry.id %>">-->
+<!--                            <input type="hidden" name="_csrf" value="<%= _csrf %>">-->
+<!--                            <button type="submit" class="btn btn-danger delete-button">Delete</button>-->
+<!--                        </form>-->
+<!--                    </td>-->
                 </tr>
             <% }) %>
         <% } else { %>
@@ -149,19 +150,19 @@
     <% } %>
 </div>
 
-<!-- Script to add confirmation before deleting a health entry -->
-<script>
-    // Attach click event listeners to all delete buttons
-    document.querySelectorAll('.delete-button').forEach(button => {
-        button.addEventListener('click', function(event) {
-            // Show confirmation dialog
-            const confirmation = confirm("Are you sure you want to delete this health entry?");
-            if (!confirmation) {
-                // Prevent form submission if the user cancels
-                event.preventDefault();
-            }
-        });
-    });
+<!--&lt;!&ndash; Script to add confirmation before deleting a health entry &ndash;&gt;-->
+<!--<script>-->
+<!--    // Attach click event listeners to all delete buttons-->
+<!--    document.querySelectorAll('.delete-button').forEach(button => {-->
+<!--        button.addEventListener('click', function(event) {-->
+<!--            // Show confirmation dialog-->
+<!--            const confirmation = confirm("Are you sure you want to delete this health entry?");-->
+<!--            if (!confirmation) {-->
+<!--                // Prevent form submission if the user cancels-->
+<!--                event.preventDefault();-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
 </script>
 
 <%- include("partials/footer.ejs") %>

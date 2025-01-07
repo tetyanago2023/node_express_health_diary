@@ -16,7 +16,7 @@
                     <span class="user-message">User <strong><%= user.name %></strong> is logged on.</span>
                     <form method="POST" action="/sessions/logoff">
                         <input type="hidden" name="_csrf" value="<%= _csrf %>">
-                        <button class="btn btn-danger">Logoff</button>
+                        <button class="btn btn-primary">Logoff</button>
                     </form>
                 </div>
             <% } %>
