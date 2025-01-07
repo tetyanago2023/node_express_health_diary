@@ -68,7 +68,7 @@
         <% if (healthEntries && healthEntries.length) { %>
             <% healthEntries.forEach((entry) => { %>
                 <tr>
-                    <td><%= entry.date.toDateString() %></td>
+                    <td><%= entry.date.toISOString().split('T')[0] %></td>
                     <td>
                         <% if (entry.time) { %>
                             <%= entry.time %>

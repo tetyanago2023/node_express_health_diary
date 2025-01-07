@@ -9,7 +9,7 @@
 <table class="table">
     <tr>
         <th>Date</th>
-        <td><%= healthEntry.date.toDateString() %></td>
+        <td><%= healthEntry.date.toISOString().split('T')[0] %></td>
     </tr>
     <tr>
         <th>Time</th>
