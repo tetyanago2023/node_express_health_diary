@@ -1,62 +1,68 @@
-<!-- /views/healthEntry.ejs -->
-
 <%- include("partials/head.ejs") %>
 <%- include("partials/header.ejs") %>
 
-<h1><%= healthEntry ? 'Edit Health Entry' : 'Add New Health Entry' %></h1>
+<div class="container mt-4">
+    <h1><%= healthEntry ? 'Edit Health Entry' : 'Add New Health Entry' %></h1>
 
-<form action="<%= healthEntry ? '/healthEntries/update/' + healthEntry._id : '/healthEntries' %>" method="POST">
-    <!-- Add CSRF token -->
-    <input type="hidden" name="_csrf" value="<%= _csrf %>">
+    <form action="<%= healthEntry ? '/healthEntries/update/' + healthEntry._id : '/healthEntries' %>" method="POST">
+        <!-- Add CSRF token -->
+        <input type="hidden" name="_csrf" value="<%= _csrf %>">
 
-    <div class="form-group">
-        <label for="date">Date:</label>
-        <input type="date" name="date" required value="<%= healthEntry ? healthEntry.date.toISOString().split('T')[0] : '' %>">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="date">Date:</label>
+                <input type="date" name="date" class="form-control" required value="<%= healthEntry ? healthEntry.date.toISOString().split('T')[0] : '' %>">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="time">Time:</label>
+                <input type="time" name="time" class="form-control" required value="<%= healthEntry ? healthEntry.time : '' %>">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="bloodSugarLevel">Blood Sugar Level (mg/dL):</label>
+            <input type="number" name="bloodSugarLevel" class="form-control" value="<%= healthEntry ? healthEntry.bloodSugarLevel : '' %>">
+        </div>
+
+        <div class="form-group">
+            <label for="medicationsTaken">Medications Taken:</label>
+            <input type="text" name="medicationsTaken" class="form-control" value="<%= healthEntry ? healthEntry.medicationsTaken : '' %>">
+        </div>
+
+        <div class="form-group">
+            <label for="physicalActivityLog">Physical Activity Log:</label>
+            <input type="text" name="physicalActivityLog" class="form-control" value="<%= healthEntry ? healthEntry.physicalActivityLog : '' %>">
+        </div>
+
+        <div class="form-group">
+            <label for="mealLog">Meal Log:</label>
+            <input type="text" name="mealLog" class="form-control" value="<%= healthEntry ? healthEntry.mealLog : '' %>">
+        </div>
+
+        <div class="form-group">
+            <label for="notes">Additional Notes:</label>
+            <input type="text" name="notes" class="form-control" value="<%= healthEntry ? healthEntry.notes : '' %>">
+        </div>
+
+        <button type="submit" class="btn btn-primary"><%= healthEntry ? 'Save Changes' : 'Add Entry' %></button>
+    </form>
+
+    <!-- Edit and Delete Buttons -->
+    <div class="mt-4">
+        <% if (healthEntry) { %>
+            <form action="/healthEntries/delete/<%= healthEntry.id %>" method="POST" style="display: inline;" class="delete-form">
+                <!-- Add CSRF token for delete form as well -->
+                <input type="hidden" name="_csrf" value="<%= _csrf %>">
+                <button type="submit" class="btn btn-danger delete-button">Delete Entry</button>
+            </form>
+        <% } %>
     </div>
 
-    <div class="form-group">
-        <label for="time">Time:</label>
-        <input type="time" name="time" required value="<%= healthEntry ? healthEntry.time : '' %>">
+    <!-- Back to List Button -->
+    <div class="mt-3">
+        <a href="/healthEntries" class="btn btn-secondary">Back to Health Entries</a>
     </div>
-
-    <div class="form-group">
-        <label for="bloodSugarLevel">Blood Sugar Level (mg/dL):</label>
-        <input type="number" name="bloodSugarLevel" value="<%= healthEntry ? healthEntry.bloodSugarLevel : '' %>">
-    </div>
-    <div class="form-group">
-        <label for="medicationsTaken">Medications Taken:</label>
-        <input type="text" name="medicationsTaken" value="<%= healthEntry ? healthEntry.medicationsTaken : '' %>">
-    </div>
-    <div class="form-group">
-        <label for="physicalActivityLog">Physical Activity Log:</label>
-        <input type="text" name="physicalActivityLog" value="<%= healthEntry ? healthEntry.physicalActivityLog : '' %>">
-    </div>
-    <div class="form-group">
-        <label for="mealLog">Meal Log:</label>
-        <input type="text" name="mealLog" value="<%= healthEntry ? healthEntry.mealLog : '' %>">
-    </div>
-    <div class="form-group">
-        <label for="notes">Additional Notes:</label>
-        <input type="text" name="notes" value="<%= healthEntry ? healthEntry.notes : '' %>">
-    </div>
-
-    <button type="submit" class="btn btn-primary"><%= healthEntry ? 'Save Changes' : 'Add Entry' %></button>
-</form>
-
-<!-- Edit and Delete Buttons -->
-<div class="entry-actions" style="margin-top: 20px;">
-    <% if (healthEntry) { %>
-        <form action="/healthEntries/delete/<%= healthEntry.id %>" method="POST" style="display: inline;" class="delete-form">
-            <!-- Add CSRF token for delete form as well -->
-            <input type="hidden" name="_csrf" value="<%= _csrf %>">
-            <button type="submit" class="btn btn-danger delete-button">Delete Entry</button>
-        </form>
-    <% } %>
-</div>
-
-<!-- Back to List Button -->
-<div style="margin-top: 20px;">
-    <a href="/healthEntries" class="btn btn-secondary">Back to Health Entries</a>
 </div>
 
 <!-- Script to add confirmation before deleting the entry -->
