@@ -85,19 +85,21 @@
 
 <!-- Pagination Controls -->
 <div class="d-flex justify-content-between align-items-center mt-4">
-    <% if (hasPrevPage) { %>
+    <% const displayTotalPages = totalPages === 0 ? "No health entries" : totalPages; %>
+    <% if (hasPrevPage && totalPages > 0) { %>
         <a href="/healthEntries?page=<%= currentPage - 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Previous</a>
     <% } else { %>
         <button class="btn btn-secondary" disabled>Previous</button>
     <% } %>
 
-    <span>Page <%= currentPage %> of <%= totalPages %></span>
+    <span>Page <%= currentPage %> of <%= displayTotalPages %></span>
 
-    <% if (hasNextPage) { %>
+    <% if (hasNextPage && totalPages > 0) { %>
         <a href="/healthEntries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Next</a>
     <% } else { %>
         <button class="btn btn-secondary" disabled>Next</button>
     <% } %>
 </div>
+
 
 <%- include("partials/footer.ejs") %>
