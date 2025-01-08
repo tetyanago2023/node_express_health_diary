@@ -1,78 +1,77 @@
-<!-- views/showHealthEntry.ejs -->
-
 <%- include("partials/head.ejs") %>
 <%- include("partials/header.ejs") %>
 
-<h2>Health Entry Details</h2>
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>Health Entry Details</h2>
+        </div>
+        <div class="card-body">
+            <!-- Display health entry details -->
+            <table class="table table-bordered">
+                <tr>
+                    <th>Date</th>
+                    <td><%= healthEntry.date.toISOString().split('T')[0] %></td>
+                </tr>
+                <tr>
+                    <th>Time</th>
+                    <td><%= healthEntry.time %></td>
+                </tr>
+                <tr>
+                    <th>Blood Sugar Level, mg/dL</th>
+                    <td><%= healthEntry.bloodSugarLevel %></td>
+                </tr>
+                <tr>
+                    <th>Medications Taken</th>
+                    <td>
+                        <% if (healthEntry.medicationsTaken && healthEntry.medicationsTaken.length) { %>
+                            <p><%= healthEntry.medicationsTaken %></p>
+                        <% } else { %>
+                            No medications recorded.
+                        <% } %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Physical Activities</th>
+                    <td>
+                        <% if (healthEntry.physicalActivityLog && healthEntry.physicalActivityLog.length) { %>
+                            <p><%= healthEntry.physicalActivityLog %></p>
+                        <% } else { %>
+                            No physical activities recorded.
+                        <% } %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Meal Log</th>
+                    <td>
+                        <% if (healthEntry.mealLog && healthEntry.mealLog.length) { %>
+                            <p><%= healthEntry.mealLog %></p>
+                        <% } else { %>
+                            No meal log recorded.
+                        <% } %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Additional Notes</th>
+                    <td><%= healthEntry.notes || "No additional notes." %></td>
+                </tr>
+            </table>
+        </div>
 
-<!-- Display health entry details -->
-<table class="table">
-    <tr>
-        <th>Date</th>
-        <td><%= healthEntry.date.toISOString().split('T')[0] %></td>
-    </tr>
-    <tr>
-        <th>Time</th>
-        <td><%= healthEntry.time %></td>
-    </tr>
-    <tr>
-        <th>Blood Sugar Level, mg/dL</th>
-        <td><%= healthEntry.bloodSugarLevel %></td>
-    </tr>
-    <tr>
-        <th>Medications Taken</th>
-        <td>
-            <% if (healthEntry.medicationsTaken && healthEntry.medicationsTaken.length) { %>
-                <p><%= healthEntry.medicationsTaken %></p> <!-- Display the string directly -->
-            <% } else { %>
-                No medications recorded.
-            <% } %>
-        </td>
-    </tr>
-    <tr>
-        <th>Physical Activities</th>
-        <td>
-            <% if (healthEntry.physicalActivityLog && healthEntry.physicalActivityLog.length) { %>
-                <p><%= healthEntry.physicalActivityLog %></p> <!-- Display the string directly -->
-            <% } else { %>
-                No physical activities recorded.
-            <% } %>
-        </td>
-    </tr>
+        <!-- Edit and Delete Actions -->
+        <div class="card-footer d-flex justify-content-between">
+            <a href="/healthEntries/form/<%= healthEntry.id %>" class="btn btn-primary">Edit Entry</a>
+            <form action="/healthEntries/delete/<%= healthEntry.id %>" method="POST" style="display: inline;">
+                <input type="hidden" name="_csrf" value="<%= _csrf %>"> <!-- CSRF Token -->
+                <button type="submit" class="btn btn-danger delete-button">Delete Entry</button>
+            </form>
+        </div>
+    </div>
 
-    <tr>
-        <th>Meal Log</th>
-        <td>
-            <% if (healthEntry.mealLog && healthEntry.mealLog.length) { %>
-                <p><%= healthEntry.mealLog %></p> <!-- Display the string directly -->
-            <% } else { %>
-                No meal log recorded.
-            <% } %>
-        </td>
-    </tr>
-
-    <tr>
-        <th>Additional Notes</th>
-        <td><%= healthEntry.notes || "No additional notes." %></td>
-    </tr>
-</table>
-
-<!-- Edit and Delete Actions -->
-<div class="entry-actions" style="margin-top: 20px;">
-    <a href="/healthEntries/form/<%= healthEntry.id %>">
-        <button type="button" class="btn btn-primary">Edit Entry</button>
-    </a>
-    <form action="/healthEntries/delete/<%= healthEntry.id %>" method="POST" style="display: inline;">
-        <input type="hidden" name="_csrf" value="<%= _csrf %>"> <!-- CSRF Token -->
-        <button type="submit" class="btn btn-danger delete-button">Delete Entry</button>
-    </form>
-</div>
-
-<!-- Back to Health Entries List -->
-<div style="margin-top: 20px;">
-    <a href="/healthEntries">
-        <button class="btn btn-secondary">Back to Health Entries</button>
-    </a>
+    <!-- Back to Health Entries List -->
+    <div class="mt-3">
+        <a href="/healthEntries" class="btn btn-secondary">Back to Health Entries</a>
+    </div>
 </div>
 
 <!-- Script to add confirmation before deleting the entry -->
