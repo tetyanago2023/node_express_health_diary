@@ -21,17 +21,27 @@
             <% } %>
         </div>
     </div>
-    <% if (errors) { %>
-        <% errors.forEach((err) => { %>
-            <div class="alert alert-danger" role="alert">
-                Error: <%= err %>
+    <% if (success && success.length > 0) { %>
+        <% success.forEach((msg) => { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Success: <%= msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <% }) %>
     <% } %>
-    <% if (info) { %>
+    <% if (errors && errors.length > 0) { %>
+        <% errors.forEach((err) => { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Error: <%= err %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <% }) %>
+    <% } %>
+    <% if (info && info.length > 0) { %>
         <% info.forEach((msg) => { %>
-            <div class="alert alert-info" role="alert">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
                 Info: <%= msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <% }) %>
     <% } %>

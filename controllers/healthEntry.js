@@ -206,7 +206,8 @@ const deleteHealthEntry = async (req, res) => {
             req.flash("error", "Health entry not found.");
         }
         const { page, limit, date } = req.query;
-        const redirectUrl = `/healthEntries?page=${encodeURIComponent(page || 1)}&limit=${encodeURIComponent(limit || 10)}&date=${encodeURIComponent(date || '')}`;
+        const redirectUrl = `/healthEntries?page=${encodeURIComponent(page || 1)}&limit=${encodeURIComponent(limit || 3)}&date=${encodeURIComponent(date || '')}`;
+        req.flash("success", "Health entry deleted successfully.");
         res.redirect(redirectUrl);
     } catch (error) {
         console.error("Error deleting health entry:", error);
