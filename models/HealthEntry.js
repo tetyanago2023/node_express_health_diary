@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const healthEntrySchema = new mongoose.Schema({
     date: { type: Date, required: true },
     time: { type: String, required: true },
-    bloodSugarLevel: { type: String },
+    bloodSugarLevel: { type: Number, required: true },
     medicationsTaken: { type: String },
     physicalActivityLog: { type: String },
     mealLog: { type: String },

@@ -62,8 +62,8 @@
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title">Date: <%= entry.date.toISOString().split('T')[0] %></h5>
-                        <p class="card-text"><strong>Time:</strong> <%= entry.time || 'No time logged' %></p>
-                        <p class="card-text"><strong>Blood Sugar Level:</strong> <%= entry.bloodSugarLevel %> mg/dL</p>
+                        <p class="card-text"><strong>Time:</strong> <%= entry.time %></p>
+                        <p class="card-text"><strong>Blood Sugar Level:</strong> <%= entry.bloodSugarLevel %></p>
                         <p class="card-text"><strong>Medications Taken:</strong> <%= entry.medicationsTaken || 'No medications listed' %></p>
                         <p class="card-text"><strong>Physical Activity:</strong> <%= entry.physicalActivityLog || 'No activity logged' %></p>
                         <p class="card-text"><strong>Meal Log:</strong> <%= entry.mealLog || 'No meal logged' %></p>
