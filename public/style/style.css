@@ -256,9 +256,9 @@ textarea:focus {
 
 /* Card styles */
 .card {
-    background-color: var(--card-bg-color, #fff); /* Default light background */
-    color: var(--card-text-color, #2c2c2c); /* Dark text for readability */
-    border: 1px solid var(--card-border-color, #ddd); /* Light border for light mode */
+    background-color: #fff; /* Default light background */
+    color: #2c2c2c; /* Dark text for readability */
+    border: 1px solid #ddd; /* Light border for light mode */
     border-radius: 8px; /* Rounded edges */
     padding: 15px; /* Add some spacing inside the card */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
