@@ -113,6 +113,7 @@ select:hover {
     --dropdown-bg-color: #fff;
     --dropdown-text-color: #000;
     --dropdown-border-color: #ccc;
+    --filter-text-color: #666;
 }
 
 /* Dark mode styles */
@@ -125,6 +126,7 @@ select:hover {
     --dropdown-bg-color: #333;
     --dropdown-text-color: #fff;
     --dropdown-border-color: #555;
+    --filter-text-color: #666;
 }
 
 /* Apply theme variables globally */
@@ -141,6 +143,13 @@ table {
 table th,
 table td {
     color: var(--text-color);
+}
+
+/* Date, time and fasting filter's font style */
+.filter-text {
+    font-size: 12px;
+    color: var(--filter-text-color);
+    font-style: italic;
 }
 
 /* Input fields for text, date, number, email, password, time, and textarea */
@@ -177,7 +186,7 @@ textarea {
 /* Placeholder styles for all inputs */
 input[type="text"]::placeholder,
 input[type="date"]::placeholder,
-input[type="time"]::placeholder, /* Added */
+input[type="time"]::placeholder,
 textarea::placeholder {
     font-size: 12px;
     color: #666;
@@ -187,7 +196,7 @@ textarea::placeholder {
 /* Focus effect for input fields */
 input[type="text"]:focus,
 input[type="date"]:focus,
-input[type="time"]:focus, /* Added */
+input[type="time"]:focus,
 input[type="number"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
@@ -223,7 +232,7 @@ textarea:hover {
 /* Dark mode input styles */
 [data-theme="dark"] input[type="text"],
 [data-theme="dark"] input[type="date"],
-[data-theme="dark"] input[type="time"], /* Added */
+[data-theme="dark"] input[type="time"],
 [data-theme="dark"] input[type="number"],
 [data-theme="dark"] input[type="email"],
 [data-theme="dark"] input[type="password"],
