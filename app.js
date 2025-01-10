@@ -100,8 +100,6 @@ app.get("/", (req, res) => {
     const currentYear = new Date().getFullYear();
     res.render('index', { currentYear });
 });
-// Get the current year
-const currentYear = new Date().getFullYear();
 app.use((req, res, next) => {
     res.locals.currentYear = new Date().getFullYear();
     next();
