@@ -23,7 +23,7 @@
 }
 
 /* Style for filter input fields and placeholders */
-#healthEntries-table input, select {
+input, select {
     width: 120px; /* Adjust as needed for desired width */
     padding: 5px;
     margin: 0 5px;
@@ -35,25 +35,24 @@
 }
 
 /* Apply theme-specific background color and border */
-[data-theme="dark"] #healthEntries-table input,
+[data-theme="dark"] input,
 [data-theme="dark"] select,
-#healthEntries-table input,
+input,
 select {
     background-color: var(--dropdown-bg-color); /* Same background for both input and select */
     color: var(--dropdown-text-color); /* Same text color for both */
     border-color: var(--dropdown-border-color); /* Same border style */
 }
 
-/* Placeholder styles for all inputs and selects */
-#healthEntries-table input::placeholder,
-select::placeholder {
+/* Placeholder styles for all inputs */
+input::placeholder {
     font-size: 12px;
     color: #666;
     font-style: italic;
 }
 
 /* Focus effect for input fields and select */
-#healthEntries-table input:focus,
+input:focus,
 select:focus {
     border-color: #007bff;
     outline: none;
@@ -61,7 +60,7 @@ select:focus {
 }
 
 /* Hover effect for input fields and select */
-#healthEntries-table input:hover,
+input:hover,
 select:hover {
     border-color: #0056b3;
 }
@@ -97,15 +96,8 @@ select:hover {
     border-color: var(--dropdown-border-color); /* Dark theme border */
 }
 
-[data-theme="dark"] #healthEntries-table input,
-[data-theme="dark"] select {
-    background-color: var(--dropdown-bg-color); /* Use dark theme dropdown background */
-    color: var(--dropdown-text-color); /* Use dark theme text color */
-    border-color: var(--dropdown-border-color); /* Dark theme border */
-}
-
 /* Dark mode input focus effect */
-[data-theme="dark"] #healthEntries-table input:focus,
+[data-theme="dark"] input:focus,
 [data-theme="dark"] select:focus {
     border-color: #80bdff;
     box-shadow: 0 0 5px rgba(128, 189, 255, 0.5);

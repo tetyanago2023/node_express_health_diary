@@ -42,7 +42,7 @@
         </div>
         <!-- Fasting Glucose Filter -->
         <div class="col-md-3">
-            <select class="form-control" name="fastingGlucoseLevel">
+            <select name="fastingGlucoseLevel">
                 <option value="" <%= !fastingFilter ? "selected" : "" %>>Filter by Fasting Glucose Level</option>
                 <option value="true" <%= fastingFilter === 'true' ? "selected" : "" %>>Yes</option>
                 <option value="false" <%= fastingFilter === 'false' ? "selected" : "" %>>No</option>
@@ -71,7 +71,7 @@
                         <p class="card-text"><strong>Medications Taken:</strong> <%= entry.medicationsTaken || 'No medications listed' %></p>
                         <p class="card-text"><strong>Physical Activity:</strong> <%= entry.physicalActivityLog || 'No activity logged' %></p>
                         <p class="card-text"><strong>Meal Log:</strong> <%= entry.mealLog || 'No meal logged' %></p>
-                        <p class="card-text"><strong>Fasting Glucose Level?:</strong> <%= entry.fastingGlucoseLevel ? 'Yes' : 'No' %></p>
+                        <p class="card-text"><strong>Fasting Glucose Level?</strong> <%= entry.fastingGlucoseLevel ? 'Yes' : 'No' %></p>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
                         <a href="/healthEntries/<%= entry.id %>" class="btn btn-primary">Show</a>
