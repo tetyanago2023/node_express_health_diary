@@ -40,9 +40,13 @@
         <div class="col-md-3">
             <input type="text" class="form-control" name="mealLog" placeholder="Filter by Meal Log" value="<%= mealLogFilter || '' %>">
         </div>
-        <!-- Notes Filter -->
+        <!-- Fasting Glucose Filter -->
         <div class="col-md-3">
-            <input type="text" class="form-control" name="notes" placeholder="Filter by Notes" value="<%= notesFilter || '' %>">
+            <select class="form-control" name="fastingGlucoseLevel">
+                <option value="" <%= !fastingFilter ? "selected" : "" %>>Filter by Fasting Glucose Level</option>
+                <option value="true" <%= fastingFilter === 'true' ? "selected" : "" %>>Yes</option>
+                <option value="false" <%= fastingFilter === 'false' ? "selected" : "" %>>No</option>
+            </select>
         </div>
         <!-- Apply and Reset Buttons -->
         <div class="col-md-3">
@@ -67,7 +71,7 @@
                         <p class="card-text"><strong>Medications Taken:</strong> <%= entry.medicationsTaken || 'No medications listed' %></p>
                         <p class="card-text"><strong>Physical Activity:</strong> <%= entry.physicalActivityLog || 'No activity logged' %></p>
                         <p class="card-text"><strong>Meal Log:</strong> <%= entry.mealLog || 'No meal logged' %></p>
-                        <p class="card-text"><strong>Notes:</strong> <%= entry.notes || 'No notes' %></p>
+                        <p class="card-text"><strong>Fasting Glucose Level?:</strong> <%= entry.fastingGlucoseLevel ? 'Yes' : 'No' %></p>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
                         <a href="/healthEntries/<%= entry.id %>" class="btn btn-primary">Show</a>
@@ -87,7 +91,7 @@
 <div class="d-flex justify-content-between align-items-center mt-4">
     <% const displayTotalPages = totalPages === 0 ? "No health entries" : totalPages; %>
     <% if (hasPrevPage && totalPages > 0) { %>
-        <a href="/healthEntries?page=<%= currentPage - 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Previous</a>
+        <a href="/healthEntries?page=<%= currentPage - 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Previous</a>
     <% } else { %>
         <button class="btn btn-secondary" disabled>Previous</button>
     <% } %>
@@ -95,11 +99,10 @@
     <span>Page <%= currentPage %> of <%= displayTotalPages %></span>
 
     <% if (hasNextPage && totalPages > 0) { %>
-        <a href="/healthEntries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&notes=<%= notesFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Next</a>
+        <a href="/healthEntries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Next</a>
     <% } else { %>
         <button class="btn btn-secondary" disabled>Next</button>
     <% } %>
 </div>
-
 
 <%- include("partials/footer.ejs") %>

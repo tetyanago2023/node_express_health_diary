@@ -4,72 +4,68 @@ const HealthEntry = require("../models/HealthEntry");
 
 const getAllHealthEntries = async (req, res) => {
     try {
-        const { date, bloodSugarLevel, physicalActivity, mealLog, notes, medicationsTaken, timeFrom, timeTo, page = 1, limit = 3 } = req.query;
+        const {
+            date,
+            bloodSugarLevel,
+            physicalActivity,
+            mealLog,
+            fastingGlucoseLevel,
+            medicationsTaken,
+            timeFrom,
+            timeTo,
+            page = 1,
+            limit = 3
+        } = req.query;
 
-        // Parse page and limit values with default fallbacks
         const pageNum = Number(page) || 1;
         const limitNum = Number(limit) || 3;
 
-        const filters = { userId: req.user.id }; // Add userId filter to ensure only entries for the current user are fetched
+        const filters = { userId: req.user.id };
 
-        // Add date filter (exact match or range if needed)
         if (date) {
-            filters.date = new Date(date); // Parse the date input correctly
+            filters.date = new Date(date);
         }
 
-        // Time filtering logic (update to use string comparison)
         let timeFilter = {};
         if (timeFrom) {
-            // Ensure timeFrom is in HH:mm format and apply filter
-            const timeFromStr = timeFrom.padStart(5, '0'); // Ensure it has HH:mm format
-            timeFilter.$gte = timeFromStr; // Greater than or equal to the timeFrom
+            const timeFromStr = timeFrom.padStart(5, '0');
+            timeFilter.$gte = timeFromStr;
         }
-
         if (timeTo) {
-            // Ensure timeTo is in HH:mm format and apply filter
-            const timeToStr = timeTo.padStart(5, '0'); // Ensure it has HH:mm format
-            timeFilter.$lte = timeToStr; // Less than or equal to the timeTo
+            const timeToStr = timeTo.padStart(5, '0');
+            timeFilter.$lte = timeToStr;
         }
-
         if (Object.keys(timeFilter).length > 0) {
-            filters.time = timeFilter; // Add time filter to the filters
+            filters.time = timeFilter;
         }
 
-        // Add blood sugar level filter (exact match or range)
         if (bloodSugarLevel) {
-            filters.bloodSugarLevel = Number(bloodSugarLevel); // Ensure it's a number
+            filters.bloodSugarLevel = Number(bloodSugarLevel);
         }
 
-        // Add medications filter (case-insensitive search)
         if (medicationsTaken) {
             filters.medicationsTaken = { $regex: medicationsTaken, $options: 'i' };
         }
 
-        // Add physical activity filter (case-insensitive search)
         if (physicalActivity) {
-            filters.physicalActivityLog = { $regex: physicalActivity, $options: 'i' }; // Updated to match plain string
+            filters.physicalActivityLog = { $regex: physicalActivity, $options: 'i' };
         }
 
-        // Add meal log filter (case-insensitive search)
         if (mealLog) {
-            filters.mealLog = { $regex: mealLog, $options: 'i' }; // Updated to match plain string
+            filters.mealLog = { $regex: mealLog, $options: 'i' };
         }
 
-        // Add notes filter (case-insensitive search)
-        if (notes) {
-            filters.notes = { $regex: notes, $options: 'i' };
+        if (fastingGlucoseLevel) {
+            filters.fastingGlucoseLevel = fastingGlucoseLevel === 'true'; // Convert to Boolean
         }
 
-        // Pagination settings
         const skip = (pageNum - 1) * limitNum;
 
-        // Query the database for health entries belonging to the logged-in user
         const healthEntries = await HealthEntry.find(filters)
-            .sort({ date: -1 }) // Sort by date in descending order
+            .sort({ date: -1 })
             .skip(skip)
             .limit(limitNum);
 
-        // Count total documents for pagination
         const totalEntries = await HealthEntry.countDocuments(filters);
 
         res.render('healthEntries', {
@@ -83,7 +79,7 @@ const getAllHealthEntries = async (req, res) => {
             bloodSugarFilter: bloodSugarLevel || '',
             activityFilter: physicalActivity || '',
             mealLogFilter: mealLog || '',
-            notesFilter: notes || '',
+            fastingFilter: fastingGlucoseLevel === 'true' ? 'true' : fastingGlucoseLevel === 'false' ? 'false' : null,
             medicationsFilter: medicationsTaken || '',
             timeFromFilter: timeFrom || '',
             timeToFilter: timeTo || ''
@@ -92,6 +88,66 @@ const getAllHealthEntries = async (req, res) => {
         console.error("Error fetching health entries:", err);
         req.flash('error', 'An error occurred while fetching health entries.');
         res.status(500).send('An error occurred while fetching health entries.');
+    }
+};
+
+const createHealthEntry = async (req, res) => {
+    try {
+        const { date, time, bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, fastingGlucoseLevel } = req.body;
+
+        if (!date || !time) {
+            req.flash("error", "Date and time are required.");
+            return res.redirect("/healthEntries/form");
+        }
+
+        const healthEntry = new HealthEntry({
+            userId: req.user.id,
+            date: new Date(date),
+            time,
+            bloodSugarLevel,
+            medicationsTaken,
+            physicalActivityLog,
+            mealLog,
+            fastingGlucoseLevel: fastingGlucoseLevel === 'true' // Convert to Boolean
+        });
+
+        await healthEntry.save();
+        res.redirect("/healthEntries");
+    } catch (error) {
+        console.error("Error creating health entry:", error);
+        req.flash("error", "An error occurred while creating the health entry.");
+        res.redirect("/healthEntries/form");
+    }
+};
+
+const updateHealthEntry = async (req, res) => {
+    try {
+        const { bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, fastingGlucoseLevel, time, date } = req.body;
+
+        const healthEntry = await HealthEntry.findOneAndUpdate(
+            { _id: req.params.id, userId: req.user.id },
+            {
+                bloodSugarLevel,
+                medicationsTaken,
+                physicalActivityLog,
+                mealLog,
+                fastingGlucoseLevel: fastingGlucoseLevel === 'true', // Convert to Boolean
+                time,
+                date: new Date(date)
+            },
+            { new: true, runValidators: true }
+        );
+
+        if (!healthEntry) {
+            req.flash("error", "Health entry not found.");
+            return res.redirect("/healthEntries");
+        }
+
+        res.redirect("/healthEntries");
+    } catch (error) {
+        console.error("Error updating health entry:", error);
+        req.flash("error", "An error occurred while updating the health entry.");
+        res.redirect("/healthEntries");
     }
 };
 
@@ -118,11 +174,6 @@ const showHealthEntryForm = async (req, res) => {
                 req.flash("error", "Health entry not found.");
                 return res.redirect("/healthEntries");
             }
-
-            // Log the time value to check if it's correctly retrieved
-            console.log("Time value:", healthEntry.time);
-            console.log("Date value:", healthEntry.date);
-
             return res.render("healthEntry", { healthEntry, _csrf: res.locals._csrf });
         }
         res.render("healthEntry", { healthEntry: null, _csrf: res.locals._csrf });
@@ -133,82 +184,14 @@ const showHealthEntryForm = async (req, res) => {
     }
 };
 
-// controllers/healthEntry.js
-
-const createHealthEntry = async (req, res) => {
-    try {
-        const { date, time, bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, notes } = req.body;
-
-        if (!date || !time) {
-            req.flash("error", "Date and time are required.");
-            return res.redirect("/healthEntries/form");
-        }
-
-        // Save the time directly as a string
-        const healthEntry = new HealthEntry({
-            userId: req.user.id,
-            date: new Date(date), // Save the date as a Date object
-            time, // Save the time as a string (e.g., "14:30")
-            bloodSugarLevel,
-            medicationsTaken,
-            physicalActivityLog,
-            mealLog,
-            notes,
-        });
-
-        await healthEntry.save();
-        res.redirect("/healthEntries");
-    } catch (error) {
-        console.error("Error creating health entry:", error);
-        req.flash("error", "An error occurred while creating the health entry.");
-        res.redirect("/healthEntries/form");
-    }
-};
-
-const updateHealthEntry = async (req, res) => {
-    try {
-        const { bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, notes, time, date } = req.body;
-
-        // Ensure that the time is stored as a string (HH:mm)
-        let timeObj = time ? time : undefined;
-
-        const healthEntry = await HealthEntry.findOneAndUpdate(
-            { _id: req.params.id, userId: req.user.id },
-            {
-                bloodSugarLevel,
-                medicationsTaken,
-                physicalActivityLog,
-                mealLog,
-                notes,
-                time: timeObj, // Store the time as a string (HH:mm)
-                date: new Date(date) // Keep the date as a Date object
-            },
-            { new: true, runValidators: true }
-        );
-
-        if (!healthEntry) {
-            req.flash("error", "Health entry not found.");
-            return res.redirect("/healthEntries");
-        }
-
-        res.redirect("/healthEntries");
-    } catch (error) {
-        console.error("Error updating health entry:", error);
-        req.flash("error", "An error occurred while updating the health entry.");
-        res.redirect("/healthEntries");
-    }
-};
-
 const deleteHealthEntry = async (req, res) => {
     try {
         const healthEntry = await HealthEntry.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
         if (!healthEntry) {
             req.flash("error", "Health entry not found.");
         }
-        const { page, limit, date } = req.query;
-        const redirectUrl = `/healthEntries?page=${encodeURIComponent(page || 1)}&limit=${encodeURIComponent(limit || 3)}&date=${encodeURIComponent(date || '')}`;
         req.flash("success", "Health entry deleted successfully.");
-        res.redirect(redirectUrl);
+        res.redirect("/healthEntries");
     } catch (error) {
         console.error("Error deleting health entry:", error);
         req.flash("error", "An error occurred while deleting the health entry.");

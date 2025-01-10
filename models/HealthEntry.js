@@ -10,7 +10,7 @@ const healthEntrySchema = new mongoose.Schema({
     medicationsTaken: { type: String },
     physicalActivityLog: { type: String },
     mealLog: { type: String },
-    notes: { type: String },
+    fastingGlucoseLevel: { type: Boolean, required: true, default: false }, // Changed from notes to fastingGlucoseLevel
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true } // Add userId here
 });
 

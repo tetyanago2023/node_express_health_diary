@@ -41,8 +41,12 @@
         </div>
 
         <div class="form-group">
-            <label for="notes">Additional Notes:</label>
-            <input type="text" name="notes" class="form-control" value="<%= healthEntry ? healthEntry.notes : '' %>">
+            <label for="fastingGlucoseLevel">Fasting Glucose Level (Yes/No):</label>
+            <select name="fastingGlucoseLevel" id="fastingGlucoseLevel" class="form-control fasting-input" required>
+                <option value="" disabled <%= !healthEntry ? 'selected' : '' %>>Select Yes or No</option>
+                <option value="true" <%= healthEntry && healthEntry.fastingGlucoseLevel ? 'selected' : '' %>>Yes</option>
+                <option value="false" <%= healthEntry && !healthEntry.fastingGlucoseLevel ? 'selected' : '' %>>No</option>
+            </select>
         </div>
 
         <button type="submit" class="btn btn-primary"><%= healthEntry ? 'Save Changes' : 'Add Entry' %></button>
