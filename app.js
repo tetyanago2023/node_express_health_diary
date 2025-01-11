@@ -2,21 +2,38 @@
 
 const express = require("express");
 require("express-async-errors");
-require("dotenv").config(); // Load environment variables from a .env file into process.env
+require("dotenv").config();
 
+const helmet = require('helmet');
+const rateLimiter = require('express-rate-limit').default || require('express-rate-limit');
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-const cookieParser = require("cookie-parser"); // Added
-const csrf = require("host-csrf"); // Added
+const cookieParser = require("cookie-parser");
+const csrf = require("host-csrf");
 const path = require("path"); // Import the `path` module
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static("public"));
+const limiter = rateLimiter({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
+
+app.use(limiter);
 
 app.use(express.json());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'"], // Allow inline scripts for confirmation dialogs
+        },
+    },
+}));
+
+app.use(express.static("public"));
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public'))); // Use `path.join` !!!
@@ -24,11 +41,10 @@ app.use(express.static(path.join(__dirname, 'public'))); // Use `path.join` !!!
 app.set("view engine", "ejs");
 
 // Middleware to parse JSON and form data
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Cookie parser
-app.use(cookieParser(process.env.SESSION_SECRET)); // Added
+app.use(cookieParser(process.env.SESSION_SECRET));
 
 // Session middleware setup
 const url = process.env.MONGO_URI;
@@ -96,7 +112,6 @@ app.use((req, res, next) => {
 
 // Routes
 app.get("/", (req, res) => {
-    // res.render("index");
     const currentYear = new Date().getFullYear();
     res.render('index', { currentYear });
 });
