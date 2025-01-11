@@ -148,7 +148,7 @@ table td {
 /* Date, time and fasting filter's font style */
 .filter-text {
     font-size: 12px;
-    color: var(--filter-text-color);
+    color: var(--filter-text-color) !important;
     font-style: italic;
 }
 
