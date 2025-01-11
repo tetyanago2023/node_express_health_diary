@@ -1,6 +1,7 @@
 // controllers/healthEntry.js
 
 const HealthEntry = require("../models/HealthEntry");
+const sanitizeInput = require("../util/sanitizer");
 
 const getAllHealthEntries = async (req, res) => {
     try {
@@ -100,15 +101,20 @@ const createHealthEntry = async (req, res) => {
             return res.redirect("/healthEntries/form");
         }
 
+        // Sanitize specific inputs
+        const sanitizedMedicationsTaken = sanitizeInput(medicationsTaken);
+        const sanitizedPhysicalActivityLog = sanitizeInput(physicalActivityLog);
+        const sanitizedMealLog = sanitizeInput(mealLog);
+
         const healthEntry = new HealthEntry({
             userId: req.user.id,
             date: new Date(date),
             time,
             bloodSugarLevel,
-            medicationsTaken,
-            physicalActivityLog,
-            mealLog,
-            fastingGlucoseLevel: fastingGlucoseLevel === 'true' // Convert to Boolean
+            medicationsTaken: sanitizedMedicationsTaken,
+            physicalActivityLog: sanitizedPhysicalActivityLog,
+            mealLog: sanitizedMealLog,
+            fastingGlucoseLevel: fastingGlucoseLevel === 'true'
         });
 
         await healthEntry.save();
@@ -124,14 +130,18 @@ const updateHealthEntry = async (req, res) => {
     try {
         const { bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, fastingGlucoseLevel, time, date } = req.body;
 
+        const sanitizedMedicationsTaken = sanitizeInput(medicationsTaken);
+        const sanitizedPhysicalActivityLog = sanitizeInput(physicalActivityLog);
+        const sanitizedMealLog = sanitizeInput(mealLog);
+
         const healthEntry = await HealthEntry.findOneAndUpdate(
             { _id: req.params.id, userId: req.user.id },
             {
                 bloodSugarLevel,
-                medicationsTaken,
-                physicalActivityLog,
-                mealLog,
-                fastingGlucoseLevel: fastingGlucoseLevel === 'true', // Convert to Boolean
+                medicationsTaken: sanitizedMedicationsTaken,
+                physicalActivityLog: sanitizedPhysicalActivityLog,
+                mealLog: sanitizedMealLog,
+                fastingGlucoseLevel: fastingGlucoseLevel === 'true',
                 time,
                 date: new Date(date)
             },
