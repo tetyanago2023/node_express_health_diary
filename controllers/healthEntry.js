@@ -45,15 +45,18 @@ const getAllHealthEntries = async (req, res) => {
         }
 
         if (medicationsTaken) {
-            filters.medicationsTaken = { $regex: medicationsTaken, $options: 'i' };
+            const sanitizedMedications = sanitizeInput(medicationsTaken);
+            filters.medicationsTaken = { $regex: sanitizedMedications, $options: 'i' };
         }
 
         if (physicalActivity) {
-            filters.physicalActivityLog = { $regex: physicalActivity, $options: 'i' };
+            const sanitizedActivity = sanitizeInput(physicalActivity);
+            filters.physicalActivityLog = { $regex: sanitizedActivity, $options: 'i' };
         }
 
         if (mealLog) {
-            filters.mealLog = { $regex: mealLog, $options: 'i' };
+            const sanitizedMealLog = sanitizeInput(mealLog);
+            filters.mealLog = { $regex: sanitizedMealLog, $options: 'i' };
         }
 
         if (fastingGlucoseLevel) {
