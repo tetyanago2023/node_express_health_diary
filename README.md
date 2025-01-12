@@ -11,11 +11,13 @@ A Node.js and Express-based application to help users track and manage their hea
 - **Health Entries Management**:
     - CRUD operations for health entries.
     - Secure access control ensures that users can only modify their own data.
-    - Validation for all model attributes to prevent invalid records.
-    - Support for additional data types like numbers, strings, dates, arrays, and booleans.
-    - Time input field to track morning glucose levels along with the date.
+    - Validation for several fields using `required` attribute in the server-side rendered views to prevent invalid records.
+    - Support for additional data types like numbers, strings, dates, and booleans.
+    - In the Date and Time input fields event pickers are implemented.
 - **Non-CRUD Features**:
-    - Searching and filtering health entries.
+    - Sorting and filtering health entries.
+    - Pagination for efficient data navigation.
+    - Light and dark theme modes for improved user experience.
 
 ### Additional Features
 - **User Notifications**:
@@ -28,7 +30,7 @@ A Node.js and Express-based application to help users track and manage their hea
 
 ## Technologies Used
 - **Backend**: Node.js, Express.js
-- **Frontend**: EJS templates (server-side rendering)
+- **Frontend**: EJS templates (server-side rendering), Bootstrap for styling
 - **Authentication**: Passport-based authentication
 - **Database**: MongoDB with Mongoose for modeling
 
@@ -50,7 +52,7 @@ A Node.js and Express-based application to help users track and manage their hea
 ## Usage
 1. Navigate to `http://localhost:3000` in your browser.
 2. Register and log in to access the application.
-3. Use the provided routes to manage health entries securely.
+3. Use the provided UI tools (buttons, links, filters) to manage health entries securely.
 
 ## Deployment
 - The application is deployed on Render.com with appropriate security configurations.
