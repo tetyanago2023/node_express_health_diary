@@ -24,14 +24,31 @@ const limiter = rateLimiter({
 app.use(limiter);
 
 app.use(express.json());
-app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", "'unsafe-inline'"], // Allow inline scripts for confirmation dialogs
+
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                scriptSrc: [
+                    "'self'",
+                    "'unsafe-inline'", // Allows inline scripts
+                    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js", // Allow Bootstrap JS
+                ],
+                styleSrc: [
+                    "'self'",
+                    "'unsafe-inline'", // Allows inline styles
+                    "https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css", // Allow Bootstrap CSS
+                    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css", // Allow FontAwesome CSS
+                ],
+                connectSrc: ["'self'"],
+                imgSrc: ["'self'", "data:"],
+                workerSrc: ["'self'", "blob:"], // Allow blob URLs for workers
+            },
         },
-    },
-}));
+        crossOriginEmbedderPolicy: false,
+    })
+);
 
 app.use(express.static("public"));
 
