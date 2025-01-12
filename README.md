@@ -19,10 +19,17 @@ A Node.js and Express-based application to help users track and manage their hea
     - Pagination for efficient data navigation.
     - Light and dark theme modes for improved user experience.
     - Responsive design for mobile and desktop users.
+    - CSRF protection to prevent cross-site request forgery attacks.
+    - Access control middleware to restrict operations to authenticated users.
+    - Best practices in the organization of application code and in indentation due to usage of modern IDE RubyMine.
 
 ### Additional Features
 - **User Notifications**:
     - User-friendly messages for actions and errors, displayed in the UI.
+    - Flash messages to provide feedback to users.
+    - Confirmation messages for critical operations like delete.
+    - Messages are stored in the user session using the connect-flash NPM package.
+    - Messages ( e.g. `error`, `info`, `success`) are displayed using EJS templates.
 - **Error Handling**:
     - Middleware to manage exceptions and provide clear messages to users.
 - **Security**:
@@ -53,7 +60,12 @@ A Node.js and Express-based application to help users track and manage their hea
 ## Usage
 1. Navigate to `http://localhost:3000` in your browser.
 2. Register and log in to access the application.
-3. Use the provided UI tools (buttons, links, filters) to manage health entries securely.
+3. Use the provided UI tools (buttons, links, filters) to navigate health entries securely.
+4. Add, update, or delete health entries as needed.
+5. Log out when done.
+6. Close the browser window to end the session.
+7. To stop the server, press `Ctrl + C` in the terminal.
+8. To restart the server, run `npm start` again.
 
 ## Deployment
 - The application is deployed on Render.com with appropriate security configurations.
