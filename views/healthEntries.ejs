@@ -17,28 +17,48 @@
     <div class="row g-3">
         <!-- Date Filter -->
         <div class="col-md-3">
-            <input type="date" class="form-control filter-text" name="date" placeholder="Filter by Date" value="<%= dateFilter || '' %>">
+            <input type="date"
+                   class="form-control filter-text"
+                   name="date"
+                   placeholder="Filter by Date"
+                   value="<%= dateFilter || '' %>"
+            >
         </div>
         <!-- Time Filter -->
         <div class="col-md-3">
-            <input type="time" class="form-control filter-text" name="timeFrom" placeholder="From Time" value="<%= timeFromFilter || '' %>">
-            <input type="time" class="form-control mt-2 filter-text" name="timeTo" placeholder="To Time" value="<%= timeToFilter || '' %>">
+            <input type="time"
+                   class="form-control
+                   filter-text"
+                   name="timeFrom"
+                   placeholder="From Time"
+                   value="<%= timeFromFilter || '' %>"
+            >
+            <input type="time"
+                   class="form-control mt-2 filter-text"
+                   name="timeTo"
+                   placeholder="To Time"
+                   value="<%= timeToFilter || '' %>"
+            >
         </div>
         <!-- Blood Sugar Level Filter -->
         <div class="col-md-3">
-            <input type="number" class="form-control" name="bloodSugarLevel" placeholder="Filter by Blood Sugar" value="<%= bloodSugarFilter || '' %>">
+            <input type="number" class="form-control"
+                   name="bloodSugarLevel" placeholder="Filter by Blood Sugar" value="<%= bloodSugarFilter || '' %>">
         </div>
         <!-- Medications Filter -->
         <div class="col-md-3">
-            <input type="text" class="form-control" name="medicationsTaken" placeholder="Filter by Medications" value="<%= medicationsFilter || '' %>">
+            <input type="text" class="form-control"
+                   name="medicationsTaken" placeholder="Filter by Medications" value="<%= medicationsFilter || '' %>">
         </div>
         <!-- Physical Activity Filter -->
         <div class="col-md-3">
-            <input type="text" class="form-control" name="physicalActivity" placeholder="Filter by Physical Activity" value="<%= activityFilter || '' %>">
+            <input type="text" class="form-control"
+                   name="physicalActivity" placeholder="Filter by Physical Activity" value="<%= activityFilter || '' %>">
         </div>
         <!-- Meal Log Filter -->
         <div class="col-md-3">
-            <input type="text" class="form-control" name="mealLog" placeholder="Filter by Meal Log" value="<%= mealLogFilter || '' %>">
+            <input type="text" class="form-control"
+                   name="mealLog" placeholder="Filter by Meal Log" value="<%= mealLogFilter || '' %>">
         </div>
         <!-- Fasting Glucose Filter -->
         <div class="col-md-3">
@@ -68,10 +88,23 @@
                         <h5 class="card-title">Date: <%= entry.date.toISOString().split('T')[0] %></h5>
                         <p class="card-text"><strong>Time:</strong> <%= entry.time %></p>
                         <p class="card-text"><strong>Blood Sugar Level:</strong> <%= entry.bloodSugarLevel %></p>
-                        <p class="card-text"><strong>Medications Taken:</strong> <%= entry.medicationsTaken || 'No medications listed' %></p>
-                        <p class="card-text"><strong>Physical Activity:</strong> <%= entry.physicalActivityLog || 'No activity logged' %></p>
-                        <p class="card-text"><strong>Meal Log:</strong> <%= entry.mealLog || 'No meal logged' %></p>
-                        <p class="card-text"><strong>Fasting Glucose Level?</strong> <%= entry.fastingGlucoseLevel ? 'Yes' : 'No' %></p>
+                        <p class="card-text">
+                            <strong>
+                                Medications Taken:
+                            </strong>
+                            <%= entry.medicationsTaken || 'No medications listed' %>
+                        </p>
+                        <p class="card-text">
+                            <strong>Physical Activity:</strong>
+                            <%= entry.physicalActivityLog || 'No activity logged' %>
+                        </p>
+                        <p class="card-text">
+                            <strong>Meal Log:</strong>
+                            <%= entry.mealLog || 'No meal logged' %></p>
+                        <p class="card-text">
+                            <strong>Fasting Glucose Level?</strong>
+                            <%= entry.fastingGlucoseLevel ? 'Yes' : 'No' %>
+                        </p>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
                         <a href="/healthEntries/<%= entry.id %>" class="btn btn-primary">Show</a>

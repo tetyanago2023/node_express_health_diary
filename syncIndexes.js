@@ -1,7 +1,7 @@
 // syncIndexes.js
 
 const mongoose = require('mongoose');
-const User = require('./models/User'); // Adjust the path to your User model
+const User = require('./models/User'); // Adjust the path to User model
 
 (async () => {
     try {

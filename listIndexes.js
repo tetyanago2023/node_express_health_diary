@@ -1,4 +1,4 @@
-// script.js
+// listIndexes.js
 
 require('dotenv').config();
 const mongoose = require('mongoose');

@@ -24,7 +24,6 @@ const registerDo = async (req, res, next) => {
         } else {
             return next(e);
         }
-        // return res.render("register", {  errors: flash("errors") });
         return res.render("register", { errors: req.flash("error") });
     }
     res.redirect("/");

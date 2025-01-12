@@ -5,8 +5,8 @@ const router = express.Router();
 
 const {
     getAllHealthEntries,
-    showHealthEntry,      // Handles showing a specific health entry
-    showHealthEntryForm,  // Handles both new and edit forms
+    showHealthEntry,
+    showHealthEntryForm,
     createHealthEntry,
     updateHealthEntry,
     deleteHealthEntry,
@@ -18,7 +18,7 @@ router.route("/")
     .post(createHealthEntry); // Create a new health entry
 
 // Form handler for adding or editing a health entry
-router.get("/form/:id?", showHealthEntryForm); // The ? makes :id optional for new entry
+router.get("/form/:id?", showHealthEntryForm);
 
 // Show a specific health entry
 router.get("/:id", showHealthEntry);
