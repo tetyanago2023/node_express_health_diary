@@ -18,6 +18,7 @@ A Node.js and Express-based application to help users track and manage their hea
     - Sorting and filtering health entries.
     - Pagination for efficient data navigation.
     - Light and dark theme modes for improved user experience.
+    - Responsive design for mobile and desktop users.
 
 ### Additional Features
 - **User Notifications**:
