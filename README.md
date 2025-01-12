@@ -66,6 +66,7 @@ A Node.js and Express-based application to help users track and manage their hea
 
 ## Future Enhancements
 - Introduce charts and analytics for glucose level trends.
+- Implement AI agent based on correspondent diabetes concerned LLM model to provide health insights, interaction with user and recommendations.
 - Add test cases using Mocha, Chai, and Puppeteer.
 - Implement PDF generation to present health data trends to third parties.
 - Integrate a reminder system for users to log their health entries.
