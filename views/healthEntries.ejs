@@ -26,19 +26,20 @@
         </div>
         <!-- Time Filter -->
         <div class="col-md-3">
-            <input type="time"
-                   class="form-control
-                   filter-text"
-                   name="timeFrom"
-                   placeholder="From Time"
-                   value="<%= timeFromFilter || '' %>"
-            >
-            <input type="time"
-                   class="form-control mt-2 filter-text"
-                   name="timeTo"
-                   placeholder="To Time"
-                   value="<%= timeToFilter || '' %>"
-            >
+            <div class="d-flex gap-2">
+                <input type="time"
+                       class="form-control filter-text flex-grow-1"
+                       name="timeFrom"
+                       placeholder="From Time"
+                       value="<%= timeFromFilter || '' %>"
+                >
+                <input type="time"
+                       class="form-control filter-text flex-grow-1"
+                       name="timeTo"
+                       placeholder="To Time"
+                       value="<%= timeToFilter || '' %>"
+                >
+            </div>
         </div>
         <!-- Blood Sugar Level Filter -->
         <div class="col-md-3">
