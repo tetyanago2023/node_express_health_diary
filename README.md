@@ -22,7 +22,7 @@ A Node.js and Express-based application to help users track and manage their hea
     - Responsive design for mobile and desktop users.
     - CSRF protection to prevent cross-site request forgery attacks.
     - Access control middleware to restrict operations to authenticated users.
-    - Best practices in the organization of application code and in indentation due to usage of modern IDE RubyMine.
+    - Best practices in the organization of application code and in indentation due to usage of modern IDE.
 
 ### Additional Features
 - **User Notifications**:

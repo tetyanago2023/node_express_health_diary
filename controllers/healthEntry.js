@@ -3,6 +3,9 @@
 const HealthEntry = require("../models/HealthEntry");
 const sanitizeInput = require("../util/sanitizer");
 
+const DEFAULT_PAGE_NUMBER = 1;
+const DEFAULT_LIMIT_NUMBER = 3;
+
 const getAllHealthEntries = async (req, res) => {
     try {
         const {
@@ -18,8 +21,8 @@ const getAllHealthEntries = async (req, res) => {
             limit = 3
         } = req.query;
 
-        const pageNum = Number(page) || 1;
-        const limitNum = Number(limit) || 3;
+        const pageNum = Number(page) || DEFAULT_PAGE_NUMBER;
+        const limitNum = Number(limit) || DEFAULT_LIMIT_NUMBER;
 
         const filters = { userId: req.user.id };
 
