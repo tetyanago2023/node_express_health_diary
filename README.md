@@ -18,6 +18,7 @@ A Node.js and Express-based application to help users track and manage their hea
     - Sorting and filtering health entries.
     - Pagination for efficient data navigation.
     - Light and dark theme modes for improved user experience.
+    - Spell-checking for input fields.
     - Responsive design for mobile and desktop users.
     - CSRF protection to prevent cross-site request forgery attacks.
     - Access control middleware to restrict operations to authenticated users.
@@ -75,6 +76,7 @@ A Node.js and Express-based application to help users track and manage their hea
 - Applied pagination for efficient data navigation.
 - Implemented light and dark theme modes for improved user experience.
 - Enabled filtering over different data types, including strings, dates, times, and booleans.
+- Implemented spell-checking for input fields.
 
 ## Future Enhancements
 - Introduce charts and analytics for glucose level trends.
