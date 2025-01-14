@@ -24,7 +24,7 @@
 
 /* Style for filter input fields and placeholders */
 input, select {
-    width: 120px; /* Adjust as needed for desired width */
+    width: 120px;
     padding: 5px;
     margin: 0 5px;
     border: 1px solid #ccc;
@@ -39,9 +39,9 @@ input, select {
 [data-theme="dark"] select,
 input,
 select {
-    background-color: var(--dropdown-bg-color); /* Same background for both input and select */
-    color: var(--dropdown-text-color); /* Same text color for both */
-    border-color: var(--dropdown-border-color); /* Same border style */
+    background-color: var(--dropdown-bg-color);
+    color: var(--dropdown-text-color);
+    border-color: var(--dropdown-border-color);
 }
 
 /* Placeholder styles for all inputs */
@@ -67,7 +67,7 @@ select:hover {
 
 /* Specific class for fasting input select */
 .fasting-input {
-    max-width: 300px; /* Reduced width for fasting dropdown */
+    max-width: 300px;
     background-color: var(--dropdown-bg-color);
     color: var(--dropdown-text-color);
     border: 1px solid var(--dropdown-border-color);
@@ -91,9 +91,9 @@ select:hover {
 /* Dark mode styles */
 [data-theme="dark"] .fasting-input,
 [data-theme="dark"] select {
-    background-color: var(--dropdown-bg-color); /* Use dark theme dropdown background */
-    color: var(--dropdown-text-color); /* Use dark theme text color */
-    border-color: var(--dropdown-border-color); /* Dark theme border */
+    background-color: var(--dropdown-bg-color);
+    color: var(--dropdown-text-color);
+    border-color: var(--dropdown-border-color);
 }
 
 /* Dark mode input focus effect */
@@ -114,6 +114,7 @@ select:hover {
     --dropdown-text-color: #000;
     --dropdown-border-color: #ccc;
     --filter-text-color: #666;
+    --grid-line-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Dark mode styles */
@@ -127,6 +128,7 @@ select:hover {
     --dropdown-text-color: #fff;
     --dropdown-border-color: #555;
     --filter-text-color: #666;
+    --grid-line-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Apply theme variables globally */
@@ -155,7 +157,7 @@ table td {
 /* Input fields for text, date, number, email, password, time, and textarea */
 input[type="text"],
 input[type="date"],
-input[type="time"], /* Added */
+input[type="time"],
 input[type="number"],
 input[type="email"],
 input[type="password"],
@@ -167,17 +169,16 @@ textarea {
     border-radius: 4px;
     padding: 5px;
     font-size: 14px;
-    width: 100%; /* Full width for better layout */
-    max-width: 300px; /* Ensure input fields don't grow too wide */
-    box-sizing: border-box; /* Include padding in width calculation */
+    width: 100%; /* Ensure input fields don't grow too wide */
+    box-sizing: border-box;
 }
 
 /* Fasting input specific styles */
 .fasting-input {
-    max-width: 300px; /* Reduced width for fasting dropdown */
-    background-color: var(--dropdown-bg-color); /* Use theme-specific dropdown background */
-    color: var(--dropdown-text-color); /* Use theme-specific text color */
-    border: 1px solid var(--dropdown-border-color); /* Border style for dropdown */
+    max-width: 300px;
+    background-color: var(--dropdown-bg-color);
+    color: var(--dropdown-text-color);
+    border: 1px solid var(--dropdown-border-color);
     border-radius: 4px;
     padding: 5px;
     font-size: 14px;
@@ -203,13 +204,13 @@ input[type="password"]:focus,
 textarea:focus {
     border-color: #007bff;
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Subtle glow effect */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 /* Hover effect for input fields */
 input[type="text"]:hover,
 input[type="date"]:hover,
-input[type="time"]:hover, /* Added */
+input[type="time"]:hover,
 input[type="number"]:hover,
 input[type="email"]:hover,
 input[type="password"]:hover,
@@ -221,7 +222,7 @@ textarea:hover {
 .fasting-input:focus {
     border-color: #007bff;
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Subtle glow effect */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 /* Dropdown hover effect */
@@ -245,7 +246,7 @@ textarea:hover {
 /* Dark mode focus effect */
 [data-theme="dark"] input[type="text"]:focus,
 [data-theme="dark"] input[type="date"]:focus,
-[data-theme="dark"] input[type="time"]:focus, /* Added */
+[data-theme="dark"] input[type="time"]:focus,
 [data-theme="dark"] input[type="number"]:focus,
 [data-theme="dark"] input[type="email"]:focus,
 [data-theme="dark"] input[type="password"]:focus,
@@ -256,22 +257,80 @@ textarea:focus {
 
 /* Card styles */
 .card {
-    background-color: #fff; /* Default light background */
-    color: #2c2c2c; /* Dark text for readability */
-    border: 1px solid #ddd; /* Light border for light mode */
-    border-radius: 8px; /* Rounded edges */
-    padding: 15px; /* Add some spacing inside the card */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    background-color: #fff;
+    color: #2c2c2c;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Card styles in dark mode */
 [data-theme="dark"] .card {
-    background-color: #2c2c2c; /* Dark gray background for dark mode */
-    color: #f1f1f1; /* Light text color */
-    border-color: #444; /* Border color for dark mode */
+    background-color: #2c2c2c;
+    color: #f1f1f1;
+    border-color: #444;
 }
 
 /* Add spacing between elements */
 .form-group {
-    margin-bottom: 1rem; /* Add space between form groups */
+    margin-bottom: 1rem;
+}
+
+/* Base styles for landing page */
+.landing-container {
+    position: relative;
+    height: 80vh; /* Reduced height */
+    background: var(--background-color, #000);
+    display: flex;
+    justify-content: center;
+    /*align-items: center;*/
+    overflow: hidden;
+    color: var(--text-color, #fff);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Decorative sparse grid overlay */
+.grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+            transparent 95%,
+            var(--grid-line-color, rgba(255, 255, 255, 0.1)) 95%
+    ),
+    linear-gradient(
+            90deg,
+            transparent 95%,
+            var(--grid-line-color, rgba(255, 255, 255, 0.1)) 95%
+    );
+    background-size: 100px 100px; /* Sparse grid */
+    pointer-events: none;
+    z-index: 1;
+    transition: background 0.3s ease;
+}
+
+/* Content styling */
+.content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.landing-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--text-color, #fff);
+}
+
+.landing-text {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-color, #fff);
+    text-align: left;
+    margin-right: 20px;
+    margin-bottom: 120px;
 }

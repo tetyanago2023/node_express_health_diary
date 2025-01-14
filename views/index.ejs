@@ -2,12 +2,27 @@
 
 <%- include("partials/head.ejs") %>
 <%- include("partials/header.ejs") %>
-<div class="text-center">
-    <% if (user) { %>
-        <a href="/healthEntries" class="btn btn-primary">View/Change Your Health Diary</a>
-    <% } else { %>
-        <a href="/sessions/logon" class="btn btn-primary">Logon</a>
-        <a href="/sessions/register" class="btn btn-secondary">Register</a>
-    <% } %>
+
+<div class="landing-container">
+    <div class="grid-overlay"></div>
+    <div class="content">
+        <p class="landing-text">
+            Take control of your health with our easy-to-use diary app!
+            Track glucose levels, manage your health entries, and monitor trends over time.
+            Our secure and user-friendly platform is tailored to help you stay on top of your health goals.
+            <br>Register today and start your journey toward better health!</br>
+        </p>
+        <h1 class="landing-title text-center">Welcome to Your Health Diary</h1>
+        <% if (user) { %>
+            <div class="text-center">
+                <a href="/healthEntries" class="btn btn-primary">View/Change Your Health Diary</a>
+            </div>
+        <% } else { %>
+            <div class="text-center">
+                <a href="/sessions/logon" class="btn btn-primary">Logon</a>
+                <a href="/sessions/register" class="btn btn-secondary">Register</a>
+            </div>
+        <% } %>
+    </div>
 </div>
 <%- include("partials/footer.ejs") %>
