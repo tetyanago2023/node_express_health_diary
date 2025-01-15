@@ -99,6 +99,15 @@ const createHealthEntry = async (req, res) => {
             return res.redirect("/healthEntries/form");
         }
 
+        const currentDate = new Date();
+        const enteredDate = new Date(date);
+
+        // Check if the entered date is in the future
+        if (enteredDate > currentDate) {
+            req.flash("error", "Date cannot be in the future.");
+            return res.redirect("/healthEntries/form");
+        }
+
         // Sanitize specific inputs
         const sanitizedMedicationsTaken = sanitizeInput(medicationsTaken);
         const sanitizedPhysicalActivityLog = sanitizeInput(physicalActivityLog);
@@ -106,7 +115,7 @@ const createHealthEntry = async (req, res) => {
 
         const healthEntry = new HealthEntry({
             userId: req.user.id,
-            date: new Date(date),
+            date: enteredDate,
             time,
             bloodSugarLevel,
             medicationsTaken: sanitizedMedicationsTaken,
@@ -128,6 +137,20 @@ const updateHealthEntry = async (req, res) => {
     try {
         const { bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, fastingGlucoseLevel, time, date } = req.body;
 
+        if (!date) {
+            req.flash("error", "Date is required.");
+            return res.redirect(`/healthEntries/form/${req.params.id}`);
+        }
+
+        const currentDate = new Date();
+        const enteredDate = new Date(date);
+
+        // Check if the entered date is in the future
+        if (enteredDate > currentDate) {
+            req.flash("error", "Date cannot be in the future.");
+            return res.redirect(`/healthEntries/form/${req.params.id}`);
+        }
+
         const sanitizedMedicationsTaken = sanitizeInput(medicationsTaken);
         const sanitizedPhysicalActivityLog = sanitizeInput(physicalActivityLog);
         const sanitizedMealLog = sanitizeInput(mealLog);
@@ -141,7 +164,7 @@ const updateHealthEntry = async (req, res) => {
                 mealLog: sanitizedMealLog,
                 fastingGlucoseLevel: fastingGlucoseLevel === 'true',
                 time,
-                date: new Date(date)
+                date: enteredDate
             },
             { new: true, runValidators: true }
         );

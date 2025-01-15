@@ -81,4 +81,10 @@
     });
 </script>
 
+<!--Script to set the maximum date to today-->
+<script>
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelector('input[name="date"]').setAttribute('max', today);
+</script>
+
 <%- include("partials/footer.ejs") %>
