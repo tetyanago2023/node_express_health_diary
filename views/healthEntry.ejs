@@ -11,33 +11,33 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="date">Date:</label>
-                <input type="date" name="date" class="form-control" required value="<%= healthEntry ? healthEntry.date.toISOString().split('T')[0] : '' %>">
+                <input type="date" name="date" class="form-control add-edit-input" required value="<%= healthEntry ? healthEntry.date.toISOString().split('T')[0] : '' %>">
             </div>
 
             <div class="form-group col-md-6">
                 <label for="time">Time:</label>
-                <input type="time" name="time" class="form-control" required value="<%= healthEntry ? healthEntry.time : '' %>">
+                <input type="time" name="time" class="form-control add-edit-input" required value="<%= healthEntry ? healthEntry.time : '' %>">
             </div>
         </div>
 
         <div class="form-group">
             <label for="bloodSugarLevel">Blood Sugar Level (mg/dL):</label>
-            <input type="number" name="bloodSugarLevel" class="form-control" required value="<%= healthEntry ? healthEntry.bloodSugarLevel : '' %>">
+            <input type="number" name="bloodSugarLevel" class="form-control add-edit-input" required value="<%= healthEntry ? healthEntry.bloodSugarLevel : '' %>">
         </div>
 
         <div class="form-group">
             <label for="medicationsTaken">Medications Taken:</label>
-            <input type="text" name="medicationsTaken" class="form-control" spellcheck="true" value="<%= healthEntry ? healthEntry.medicationsTaken : '' %>">
+            <input type="text" name="medicationsTaken" class="form-control add-edit-input" spellcheck="true" value="<%= healthEntry ? healthEntry.medicationsTaken : '' %>">
         </div>
 
         <div class="form-group">
             <label for="physicalActivityLog">Physical Activity Log:</label>
-            <input type="text" name="physicalActivityLog" class="form-control" spellcheck="true" value="<%= healthEntry ? healthEntry.physicalActivityLog : '' %>">
+            <input type="text" name="physicalActivityLog" class="form-control add-edit-input" spellcheck="true" value="<%= healthEntry ? healthEntry.physicalActivityLog : '' %>">
         </div>
 
         <div class="form-group">
             <label for="mealLog">Meal Log:</label>
-            <input type="text" name="mealLog" class="form-control" spellcheck="true" value="<%= healthEntry ? healthEntry.mealLog : '' %>">
+            <input type="text" name="mealLog" class="form-control add-edit-input" spellcheck="true" value="<%= healthEntry ? healthEntry.mealLog : '' %>">
         </div>
 
         <div class="form-group">
