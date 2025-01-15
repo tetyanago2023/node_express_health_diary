@@ -6,7 +6,7 @@
 <h2 class="mt-1">Health Entries List</h2>
 
 <!-- Add New Health Entry Button -->
-<div style="margin-bottom: 5px;">
+<div style="margin-bottom: 15px;">
     <a href="/healthEntries/form">
         <button type="button" class="btn btn-primary">Add New Health Entry</button>
     </a>
@@ -15,6 +15,21 @@
 <!-- Filters Form -->
 <form method="GET" action="/healthEntries" class="mb-4">
     <div class="row g-3">
+        <form method="get" action="/healthEntries" class="d-flex align-items-center">
+            <div class="input-group">
+                <input
+                        type="text"
+                        name="searchQuery"
+                        class="form-control"
+                        placeholder="Search medications, activity, or meals"
+                        value="<%= searchQuery %>"
+                >
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> <!-- Search icon -->
+                </button>
+            </div>
+        </form>
+
         <!-- Date Filter -->
         <div class="col-md-3">
             <input type="date"
@@ -45,21 +60,6 @@
         <div class="col-md-3">
             <input type="number" class="form-control"
                    name="bloodSugarLevel" placeholder="Filter by Blood Sugar" value="<%= bloodSugarFilter || '' %>">
-        </div>
-        <!-- Medications Filter -->
-        <div class="col-md-3">
-            <input type="text" class="form-control"
-                   name="medicationsTaken" placeholder="Filter by Medications" value="<%= medicationsFilter || '' %>">
-        </div>
-        <!-- Physical Activity Filter -->
-        <div class="col-md-3">
-            <input type="text" class="form-control"
-                   name="physicalActivity" placeholder="Filter by Physical Activity" value="<%= activityFilter || '' %>">
-        </div>
-        <!-- Meal Log Filter -->
-        <div class="col-md-3">
-            <input type="text" class="form-control"
-                   name="mealLog" placeholder="Filter by Meal Log" value="<%= mealLogFilter || '' %>">
         </div>
         <!-- Fasting Glucose Filter -->
         <div class="col-md-3">
@@ -133,8 +133,8 @@
     <span>Page <%= currentPage %> of <%= displayTotalPages %></span>
 
     <% if (hasNextPage && totalPages > 0) { %>
-        <a href="/healthEntries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Next</a>
-    <% } else { %>
+        <a href="/healthEntries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&searchQuery=<%= searchQuery %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Next</a>
+<% } else { %>
         <button class="btn btn-secondary" disabled>Next</button>
     <% } %>
 </div>
