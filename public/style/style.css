@@ -24,7 +24,8 @@
 
 /* Style for filter input fields and placeholders */
 input, select {
-    width: 120px;
+    /*width: 120px;*/
+    width: 100px;
     padding: 5px;
     margin: 0 5px;
     border: 1px solid #ccc;
