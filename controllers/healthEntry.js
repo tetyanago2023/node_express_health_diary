@@ -86,7 +86,7 @@ const getAllHealthEntries = async (req, res) => {
             bloodSugarFilter: bloodSugarLevel || '',
             activityFilter: physicalActivity || '',
             mealLogFilter: mealLog || '',
-            fastingFilter: fastingGlucoseLevel === 'true' ? 'true' : fastingGlucoseLevel === 'false' ? 'false' : null,
+            fastingFilter: ['true', 'false'].includes(fastingGlucoseLevel) ? fastingGlucoseLevel : null,
             medicationsFilter: medicationsTaken || '',
             timeFromFilter: timeFrom || '',
             timeToFilter: timeTo || ''
