@@ -15,6 +15,7 @@
 <!-- Filters Form -->
 <form method="GET" action="/healthEntries" class="mb-4">
     <div class="row g-3">
+        <!-- Search Field -->
         <form method="get" action="/healthEntries" class="d-flex align-items-center">
             <div class="input-group">
                 <div style="width: 230px !important;">
@@ -36,15 +37,18 @@
 
         <!-- Date Filter -->
         <div class="col-md-3">
+            <label for="dateFilter" class="form-label filter-text">Filter by Date</label>
             <input type="date"
                    class="form-control filter-text"
+                   id="dateFilter"
                    name="date"
-                   placeholder="Filter by Date"
                    value="<%= dateFilter || '' %>"
             >
         </div>
-        <!-- Time Filter -->
+
+        <!-- Time Filters -->
         <div class="col-md-3">
+            <label class="form-label filter-text">Filtering Period: e.g. "From 05:45 To 06:05"</label>
             <div class="d-flex gap-2">
                 <input type="time"
                        class="form-control filter-text flex-grow-1"
@@ -60,19 +64,28 @@
                 >
             </div>
         </div>
+
         <!-- Blood Sugar Level Filter -->
         <div class="col-md-3">
-            <input type="number" class="form-control"
-                   name="bloodSugarLevel" placeholder="Filter by Blood Sugar" value="<%= bloodSugarFilter || '' %>">
+            <label for="bloodSugarFilter" class="form-label filter-text">Filter by Blood Sugar</label>
+            <input type="number"
+                   class="form-control"
+                   id="bloodSugarFilter"
+                   name="bloodSugarLevel"
+                   value="<%= bloodSugarFilter || '' %>"
+            >
         </div>
+
         <!-- Fasting Glucose Filter -->
         <div class="col-md-3">
-            <select class="filter-text" name="fastingGlucoseLevel">
-                <option value="" <%= !fastingFilter ? "selected" : "" %>>Filter by Fasting Glucose Level</option>
+            <label for="fastingGlucoseFilter" class="form-label filter-text">Filter by Fasting Glucose Level</label>
+            <select class="filter-text form-control" id="fastingGlucoseFilter" name="fastingGlucoseLevel">
+                <option value="" <%= !fastingFilter ? "selected" : "" %>>Please Select Yes/No</option>
                 <option value="true" <%= fastingFilter === 'true' ? "selected" : "" %>>Yes</option>
                 <option value="false" <%= fastingFilter === 'false' ? "selected" : "" %>>No</option>
             </select>
         </div>
+
         <!-- Apply and Reset Buttons -->
         <div class="col-md-3">
             <div class="d-flex gap-2">
