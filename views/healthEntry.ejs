@@ -11,38 +11,38 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="date">Date:</label>
-                <input type="date" name="date" class="form-control" required value="<%= healthEntry ? healthEntry.date.toISOString().split('T')[0] : '' %>">
+                <input type="date" name="date" class="form-control add-edit-input filter-text" required value="<%= healthEntry ? healthEntry.date.toISOString().split('T')[0] : '' %>">
             </div>
 
             <div class="form-group col-md-6">
                 <label for="time">Time:</label>
-                <input type="time" name="time" class="form-control" required value="<%= healthEntry ? healthEntry.time : '' %>">
+                <input type="time" name="time" class="form-control add-edit-input filter-text" required value="<%= healthEntry ? healthEntry.time : '' %>">
             </div>
         </div>
 
         <div class="form-group">
             <label for="bloodSugarLevel">Blood Sugar Level (mg/dL):</label>
-            <input type="number" name="bloodSugarLevel" class="form-control" required value="<%= healthEntry ? healthEntry.bloodSugarLevel : '' %>">
+            <input type="number" name="bloodSugarLevel" class="form-control add-edit-input" placeholder="Please enter glucose level number" required value="<%= healthEntry ? healthEntry.bloodSugarLevel : '' %>">
         </div>
 
         <div class="form-group">
             <label for="medicationsTaken">Medications Taken:</label>
-            <input type="text" name="medicationsTaken" class="form-control" spellcheck="true" value="<%= healthEntry ? healthEntry.medicationsTaken : '' %>">
+            <input type="text" name="medicationsTaken" class="form-control add-edit-input" placeholder="Please enter a medication name" spellcheck="true" value="<%= healthEntry ? healthEntry.medicationsTaken : '' %>">
         </div>
 
         <div class="form-group">
             <label for="physicalActivityLog">Physical Activity Log:</label>
-            <input type="text" name="physicalActivityLog" class="form-control" spellcheck="true" value="<%= healthEntry ? healthEntry.physicalActivityLog : '' %>">
+            <input type="text" name="physicalActivityLog" class="form-control add-edit-input" placeholder="Please enter your activity, like '10k steps'" spellcheck="true" value="<%= healthEntry ? healthEntry.physicalActivityLog : '' %>">
         </div>
 
         <div class="form-group">
             <label for="mealLog">Meal Log:</label>
-            <input type="text" name="mealLog" class="form-control" spellcheck="true" value="<%= healthEntry ? healthEntry.mealLog : '' %>">
+            <input type="text" name="mealLog" class="form-control add-edit-input" placeholder="Please enter some food name, like 'apple'" spellcheck="true" value="<%= healthEntry ? healthEntry.mealLog : '' %>">
         </div>
 
         <div class="form-group">
-            <label for="fastingGlucoseLevel">Fasting Glucose Level (Yes/No):</label>
-            <select name="fastingGlucoseLevel" id="fastingGlucoseLevel" class="form-control fasting-input" required>
+            <label for="fastingGlucoseLevel">Fasting Glucose Level? (Yes/No):</label>
+            <select name="fastingGlucoseLevel" id="fastingGlucoseLevel" class="form-control fasting-input filter-text" required>
                 <option value="" disabled <%= !healthEntry ? 'selected' : '' %>>Select Yes or No</option>
                 <option value="true" <%= healthEntry && healthEntry.fastingGlucoseLevel ? 'selected' : '' %>>Yes</option>
                 <option value="false" <%= healthEntry && !healthEntry.fastingGlucoseLevel ? 'selected' : '' %>>No</option>
@@ -79,6 +79,12 @@
             }
         });
     });
+</script>
+
+<!--Script to set the maximum date to today-->
+<script>
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelector('input[name="date"]').setAttribute('max', today);
 </script>
 
 <%- include("partials/footer.ejs") %>

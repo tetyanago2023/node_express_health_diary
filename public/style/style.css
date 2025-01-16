@@ -24,7 +24,7 @@
 
 /* Style for filter input fields and placeholders */
 input, select {
-    width: 120px;
+    width: 100px;
     padding: 5px;
     margin: 0 5px;
     border: 1px solid #ccc;
@@ -171,6 +171,10 @@ textarea {
     font-size: 14px;
     width: 100%; /* Ensure input fields don't grow too wide */
     box-sizing: border-box;
+}
+
+.add-edit-input {
+    max-width: 300px;
 }
 
 /* Fasting input specific styles */

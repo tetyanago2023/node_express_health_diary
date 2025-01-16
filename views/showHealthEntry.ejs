@@ -22,12 +22,6 @@
                     <td><%= healthEntry.bloodSugarLevel %></td>
                 </tr>
                 <tr>
-                    <th>Fasting Glucose</th>
-                    <td>
-                        <%= healthEntry.fastingGlucoseLevel === true ? 'Yes' : 'No' %>
-                    </td>
-                </tr>
-                <tr>
                     <th>Medications Taken</th>
                     <td>
                         <% if (healthEntry.medicationsTaken && healthEntry.medicationsTaken.length) { %>
@@ -60,7 +54,7 @@
                 <tr>
                     <th>Fasting Glucose Level?</th>
                     <td>
-                        <%= healthEntry.fastingGlucoseLevel %>
+                        <%= healthEntry.fastingGlucoseLevel === true ? 'Yes' : 'No' %>
                     </td>
                 </tr>
             </table>

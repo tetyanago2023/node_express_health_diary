@@ -11,10 +11,8 @@ const getAllHealthEntries = async (req, res) => {
         const {
             date,
             bloodSugarLevel,
-            physicalActivity,
-            mealLog,
+            searchQuery, // Single search input for multiple fields
             fastingGlucoseLevel,
-            medicationsTaken,
             timeFrom,
             timeTo,
             page = 1,
@@ -47,23 +45,18 @@ const getAllHealthEntries = async (req, res) => {
             filters.bloodSugarLevel = Number(bloodSugarLevel);
         }
 
-        if (medicationsTaken) {
-            const sanitizedMedications = sanitizeInput(medicationsTaken);
-            filters.medicationsTaken = { $regex: sanitizedMedications, $options: 'i' };
-        }
-
-        if (physicalActivity) {
-            const sanitizedActivity = sanitizeInput(physicalActivity);
-            filters.physicalActivityLog = { $regex: sanitizedActivity, $options: 'i' };
-        }
-
-        if (mealLog) {
-            const sanitizedMealLog = sanitizeInput(mealLog);
-            filters.mealLog = { $regex: sanitizedMealLog, $options: 'i' };
-        }
-
         if (fastingGlucoseLevel) {
             filters.fastingGlucoseLevel = fastingGlucoseLevel === 'true'; // Convert to Boolean
+        }
+
+        // Add search query filter for multiple fields
+        if (searchQuery) {
+            const sanitizedQuery = sanitizeInput(searchQuery);
+            filters.$or = [
+                { medicationsTaken: { $regex: sanitizedQuery, $options: 'i' } },
+                { physicalActivityLog: { $regex: sanitizedQuery, $options: 'i' } },
+                { mealLog: { $regex: sanitizedQuery, $options: 'i' } }
+            ];
         }
 
         const skip = (pageNum - 1) * limitNum;
@@ -84,10 +77,8 @@ const getAllHealthEntries = async (req, res) => {
             hasNextPage: pageNum * limitNum < totalEntries,
             dateFilter: date || '',
             bloodSugarFilter: bloodSugarLevel || '',
-            activityFilter: physicalActivity || '',
-            mealLogFilter: mealLog || '',
+            searchQuery: searchQuery || '', // Pass the search query back for UI rendering
             fastingFilter: ['true', 'false'].includes(fastingGlucoseLevel) ? fastingGlucoseLevel : null,
-            medicationsFilter: medicationsTaken || '',
             timeFromFilter: timeFrom || '',
             timeToFilter: timeTo || ''
         });
@@ -98,12 +89,22 @@ const getAllHealthEntries = async (req, res) => {
     }
 };
 
+
 const createHealthEntry = async (req, res) => {
     try {
         const { date, time, bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, fastingGlucoseLevel } = req.body;
 
         if (!date || !time) {
             req.flash("error", "Date and time are required.");
+            return res.redirect("/healthEntries/form");
+        }
+
+        const currentDate = new Date();
+        const enteredDate = new Date(date);
+
+        // Check if the entered date is in the future
+        if (enteredDate > currentDate) {
+            req.flash("error", "Date cannot be in the future.");
             return res.redirect("/healthEntries/form");
         }
 
@@ -114,7 +115,7 @@ const createHealthEntry = async (req, res) => {
 
         const healthEntry = new HealthEntry({
             userId: req.user.id,
-            date: new Date(date),
+            date: enteredDate,
             time,
             bloodSugarLevel,
             medicationsTaken: sanitizedMedicationsTaken,
@@ -136,6 +137,20 @@ const updateHealthEntry = async (req, res) => {
     try {
         const { bloodSugarLevel, medicationsTaken, physicalActivityLog, mealLog, fastingGlucoseLevel, time, date } = req.body;
 
+        if (!date) {
+            req.flash("error", "Date is required.");
+            return res.redirect(`/healthEntries/form/${req.params.id}`);
+        }
+
+        const currentDate = new Date();
+        const enteredDate = new Date(date);
+
+        // Check if the entered date is in the future
+        if (enteredDate > currentDate) {
+            req.flash("error", "Date cannot be in the future.");
+            return res.redirect(`/healthEntries/form/${req.params.id}`);
+        }
+
         const sanitizedMedicationsTaken = sanitizeInput(medicationsTaken);
         const sanitizedPhysicalActivityLog = sanitizeInput(physicalActivityLog);
         const sanitizedMealLog = sanitizeInput(mealLog);
@@ -149,7 +164,7 @@ const updateHealthEntry = async (req, res) => {
                 mealLog: sanitizedMealLog,
                 fastingGlucoseLevel: fastingGlucoseLevel === 'true',
                 time,
-                date: new Date(date)
+                date: enteredDate
             },
             { new: true, runValidators: true }
         );

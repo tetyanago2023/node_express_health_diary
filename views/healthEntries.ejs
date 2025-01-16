@@ -6,7 +6,7 @@
 <h2 class="mt-1">Health Entries List</h2>
 
 <!-- Add New Health Entry Button -->
-<div style="margin-bottom: 5px;">
+<div style="margin-bottom: 15px;">
     <a href="/healthEntries/form">
         <button type="button" class="btn btn-primary">Add New Health Entry</button>
     </a>
@@ -15,17 +15,40 @@
 <!-- Filters Form -->
 <form method="GET" action="/healthEntries" class="mb-4">
     <div class="row g-3">
+        <!-- Search Field -->
+        <form method="get" action="/healthEntries" class="d-flex align-items-center">
+            <div class="input-group">
+                <div style="width: 230px !important;">
+                    <input
+                            type="text"
+                            name="searchQuery"
+                            class="form-control"
+                            placeholder="Search medications, activity, or meals"
+                            value="<%= searchQuery %>"
+                    >
+                </div>
+                <div style="margin: 0 0 0 10px;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> <!-- Search icon -->
+                    </button>
+                </div>
+            </div>
+        </form>
+
         <!-- Date Filter -->
         <div class="col-md-3">
+            <label for="dateFilter" class="form-label filter-text">Filter by Date</label>
             <input type="date"
                    class="form-control filter-text"
+                   id="dateFilter"
                    name="date"
-                   placeholder="Filter by Date"
                    value="<%= dateFilter || '' %>"
             >
         </div>
-        <!-- Time Filter -->
+
+        <!-- Time Filters -->
         <div class="col-md-3">
+            <label class="form-label filter-text">Filtering Period: e.g. "From 05:45 To 06:05"</label>
             <div class="d-flex gap-2">
                 <input type="time"
                        class="form-control filter-text flex-grow-1"
@@ -41,34 +64,29 @@
                 >
             </div>
         </div>
+
         <!-- Blood Sugar Level Filter -->
         <div class="col-md-3">
-            <input type="number" class="form-control"
-                   name="bloodSugarLevel" placeholder="Filter by Blood Sugar" value="<%= bloodSugarFilter || '' %>">
+            <label for="bloodSugarFilter" class="form-label filter-text">Filter by Blood Glucose Level</label>
+            <input type="number"
+                   class="form-control"
+                   id="bloodSugarFilter"
+                   name="bloodSugarLevel"
+                   placeholder="Please enter a number"
+                   value="<%= bloodSugarFilter || '' %>"
+            >
         </div>
-        <!-- Medications Filter -->
-        <div class="col-md-3">
-            <input type="text" class="form-control"
-                   name="medicationsTaken" placeholder="Filter by Medications" value="<%= medicationsFilter || '' %>">
-        </div>
-        <!-- Physical Activity Filter -->
-        <div class="col-md-3">
-            <input type="text" class="form-control"
-                   name="physicalActivity" placeholder="Filter by Physical Activity" value="<%= activityFilter || '' %>">
-        </div>
-        <!-- Meal Log Filter -->
-        <div class="col-md-3">
-            <input type="text" class="form-control"
-                   name="mealLog" placeholder="Filter by Meal Log" value="<%= mealLogFilter || '' %>">
-        </div>
+
         <!-- Fasting Glucose Filter -->
         <div class="col-md-3">
-            <select class="filter-text" name="fastingGlucoseLevel">
-                <option value="" <%= !fastingFilter ? "selected" : "" %>>Filter by Fasting Glucose Level</option>
+            <label for="fastingGlucoseFilter" class="form-label filter-text">Fasting Glucose Level?</label>
+            <select class="filter-text form-control" id="fastingGlucoseFilter" name="fastingGlucoseLevel">
+                <option value="" <%= !fastingFilter ? "selected" : "" %>>Please select Yes/No</option>
                 <option value="true" <%= fastingFilter === 'true' ? "selected" : "" %>>Yes</option>
                 <option value="false" <%= fastingFilter === 'false' ? "selected" : "" %>>No</option>
             </select>
         </div>
+
         <!-- Apply and Reset Buttons -->
         <div class="col-md-3">
             <div class="d-flex gap-2">
@@ -124,18 +142,48 @@
 <!-- Pagination Controls -->
 <div class="d-flex justify-content-between align-items-center mt-4">
     <% const displayTotalPages = totalPages === 0 ? "No health entries" : totalPages; %>
+
+    <!-- "To First Page" Icon -->
+    <% if (currentPage > 1) { %>
+        <a href="/healthEntries?page=1&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&searchQuery=<%= searchQuery %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">
+            <i class="fas fa-angle-double-left"></i> <!-- Icon for "To First Page" -->
+        </a>
+    <% } else { %>
+        <button class="btn btn-secondary" disabled>
+            <i class="fas fa-angle-double-left"></i>
+        </button>
+    <% } %>
+
+    <!-- "Previous" Button -->
     <% if (hasPrevPage && totalPages > 0) { %>
-        <a href="/healthEntries?page=<%= currentPage - 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Previous</a>
+        <a href="/healthEntries?page=<%= currentPage - 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&searchQuery=<%= searchQuery %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">
+            Previous
+        </a>
     <% } else { %>
         <button class="btn btn-secondary" disabled>Previous</button>
     <% } %>
 
+    <!-- Current Page Display -->
     <span>Page <%= currentPage %> of <%= displayTotalPages %></span>
 
+    <!-- "Next" Button -->
     <% if (hasNextPage && totalPages > 0) { %>
-        <a href="/healthEntries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&medicationsTaken=<%= medicationsFilter %>&physicalActivity=<%= activityFilter %>&mealLog=<%= mealLogFilter %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Next</a>
+        <a href="/healthEntries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&searchQuery=<%= searchQuery %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">
+            Next
+        </a>
     <% } else { %>
         <button class="btn btn-secondary" disabled>Next</button>
+    <% } %>
+
+    <!-- "To Last Page" Icon -->
+    <% if (currentPage < totalPages) { %>
+        <a href="/healthEntries?page=<%= totalPages %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&searchQuery=<%= searchQuery %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">
+            <i class="fas fa-angle-double-right"></i> <!-- Icon for "To Last Page" -->
+        </a>
+    <% } else { %>
+        <button class="btn btn-secondary" disabled>
+            <i class="fas fa-angle-double-right"></i>
+        </button>
     <% } %>
 </div>
 
