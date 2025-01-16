@@ -67,20 +67,21 @@
 
         <!-- Blood Sugar Level Filter -->
         <div class="col-md-3">
-            <label for="bloodSugarFilter" class="form-label filter-text">Filter by Blood Sugar</label>
+            <label for="bloodSugarFilter" class="form-label filter-text">Filter by Blood Glucose Level</label>
             <input type="number"
                    class="form-control"
                    id="bloodSugarFilter"
                    name="bloodSugarLevel"
+                   placeholder="Please enter a number"
                    value="<%= bloodSugarFilter || '' %>"
             >
         </div>
 
         <!-- Fasting Glucose Filter -->
         <div class="col-md-3">
-            <label for="fastingGlucoseFilter" class="form-label filter-text">Filter by Fasting Glucose Level</label>
+            <label for="fastingGlucoseFilter" class="form-label filter-text">Fasting Glucose Level?</label>
             <select class="filter-text form-control" id="fastingGlucoseFilter" name="fastingGlucoseLevel">
-                <option value="" <%= !fastingFilter ? "selected" : "" %>>Please Select Yes/No</option>
+                <option value="" <%= !fastingFilter ? "selected" : "" %>>Please select Yes/No</option>
                 <option value="true" <%= fastingFilter === 'true' ? "selected" : "" %>>Yes</option>
                 <option value="false" <%= fastingFilter === 'false' ? "selected" : "" %>>No</option>
             </select>
@@ -141,18 +142,48 @@
 <!-- Pagination Controls -->
 <div class="d-flex justify-content-between align-items-center mt-4">
     <% const displayTotalPages = totalPages === 0 ? "No health entries" : totalPages; %>
+
+    <!-- "To First Page" Icon -->
+    <% if (currentPage > 1) { %>
+        <a href="/healthEntries?page=1&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&searchQuery=<%= searchQuery %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">
+            <i class="fas fa-angle-double-left"></i> <!-- Icon for "To First Page" -->
+        </a>
+    <% } else { %>
+        <button class="btn btn-secondary" disabled>
+            <i class="fas fa-angle-double-left"></i>
+        </button>
+    <% } %>
+
+    <!-- "Previous" Button -->
     <% if (hasPrevPage && totalPages > 0) { %>
-        <a href="/healthEntries?page=<%= currentPage - 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&searchQuery=<%= searchQuery %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Previous</a>
+        <a href="/healthEntries?page=<%= currentPage - 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&searchQuery=<%= searchQuery %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">
+            Previous
+        </a>
     <% } else { %>
         <button class="btn btn-secondary" disabled>Previous</button>
     <% } %>
 
+    <!-- Current Page Display -->
     <span>Page <%= currentPage %> of <%= displayTotalPages %></span>
 
+    <!-- "Next" Button -->
     <% if (hasNextPage && totalPages > 0) { %>
-        <a href="/healthEntries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&searchQuery=<%= searchQuery %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">Next</a>
+        <a href="/healthEntries?page=<%= currentPage + 1 %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&searchQuery=<%= searchQuery %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">
+            Next
+        </a>
     <% } else { %>
         <button class="btn btn-secondary" disabled>Next</button>
+    <% } %>
+
+    <!-- "To Last Page" Icon -->
+    <% if (currentPage < totalPages) { %>
+        <a href="/healthEntries?page=<%= totalPages %>&limit=<%= limit %>&date=<%= dateFilter %>&bloodSugarLevel=<%= bloodSugarFilter %>&searchQuery=<%= searchQuery %>&fastingGlucoseLevel=<%= fastingFilter %>&timeFrom=<%= timeFromFilter %>&timeTo=<%= timeToFilter %>" class="btn btn-secondary">
+            <i class="fas fa-angle-double-right"></i> <!-- Icon for "To Last Page" -->
+        </a>
+    <% } else { %>
+        <button class="btn btn-secondary" disabled>
+            <i class="fas fa-angle-double-right"></i>
+        </button>
     <% } %>
 </div>
 
