@@ -1,8 +1,9 @@
 {
-  "name": "Health Diary",
+  "name": "health_diary",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "test": "NODE_ENV=test mocha tests/*.js --timeout 5000 --exit",
     "start": "nodemon app.js"
   },
   "keywords": [],
@@ -30,8 +31,14 @@
     "validator": "^13.12.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.4.0",
+    "chai": "^5.1.2",
+    "chai-http": "^5.1.1",
     "eslint": "^9.17.0",
+    "factory-bot": "^6.3.1",
+    "mocha": "^11.0.1",
     "nodemon": "^2.0.22",
-    "prettier": "3.4.2"
+    "prettier": "3.4.2",
+    "puppeteer": "^24.1.0"
   }
 }

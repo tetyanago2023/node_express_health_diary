@@ -64,10 +64,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.SESSION_SECRET));
 
 // Session middleware setup
-const url = process.env.MONGO_URI;
-
+let mongoURL = process.env.MONGO_URI;
+if (process.env.NODE_ENV === "test") {
+    mongoURL = process.env.MONGO_URI_TEST;
+}
 const store = new MongoDBStore({
-    uri: url,
+    uri: mongoURL,
     collection: "mySessions",
 });
 store.on("error", function (error) {
@@ -143,6 +145,17 @@ const auth = require("./middleware/auth");
 const healthEntryRouter = require("./routes/healthEntry");
 app.use("/healthEntries", auth, healthEntryRouter);
 
+
+app.get("/multiply", (req, res) => {
+    let result = req.query.first * req.query.second;
+    if (result.isNaN) {
+        result = "NaN";
+    } else if (result == null) {
+        result = "null";
+    }
+    res.json({ result: result });
+});
+
 const start = async () => {
     try {
         await require("./db/connect")(process.env.MONGO_URI);
@@ -155,3 +168,5 @@ const start = async () => {
 };
 
 start();
+
+module.exports = { app };
