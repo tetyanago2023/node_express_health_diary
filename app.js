@@ -145,7 +145,14 @@ const auth = require("./middleware/auth");
 const healthEntryRouter = require("./routes/healthEntry");
 app.use("/healthEntries", auth, healthEntryRouter);
 
-
+app.use((req, res, next) => {
+    if (req.path === "/multiply") {
+        res.set("Content-Type", "application/json");
+    } else {
+        res.set("Content-Type", "text/html");
+    }
+    next();
+});
 app.get("/multiply", (req, res) => {
     let result = req.query.first * req.query.second;
     if (result.isNaN) {
